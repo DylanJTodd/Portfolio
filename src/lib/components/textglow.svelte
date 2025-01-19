@@ -16,6 +16,7 @@
             0 0 calc(var(--glow-spread) * 2) rgba(43, 255, 0, var(--glow-opacity)),
             0 0 calc(var(--glow-spread) * 3) rgba(43, 255, 0, calc(var(--glow-opacity) * 0.5));
         animation: pulse 4s infinite;
+        pointer-events: auto; /* Ensure it allows interactions */
     }
 
     @keyframes pulse {

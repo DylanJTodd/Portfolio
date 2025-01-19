@@ -13,6 +13,7 @@
             calc(var(--base-offset) * -1) 0 var(--flicker-color),
             var(--base-offset) 0 var(--flicker-color);
         animation: flicker 0.2s infinite steps(1);
+        pointer-events: auto; /* Ensure it allows interactions */
     }
 
     @keyframes flicker {
