@@ -85,13 +85,13 @@
             transform: skewX(0deg) skewY(0deg);
         }
         25% {
-            transform: skewX(0.5deg) skewY(0.25deg);
+            transform: skewX(0.25deg) skewY(0.1deg);
         }
         50% {
-            transform: skewX(-0.5deg) skewY(-0.25deg);
+            transform: skewX(-0.25deg) skewY(-0.1deg);
         }
         75% {
-            transform: skewX(0.5deg) skewY(0.25deg);
+            transform: skewX(0.25deg) skewY(0.1deg);
         }
         100% {
             transform: skewX(0deg) skewY(0deg);
