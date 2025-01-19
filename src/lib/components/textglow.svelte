@@ -6,8 +6,8 @@
 <style>
     .text-glow {
         --glow-color: #ffffff;
-        --glow-spread: 10px;
-        --glow-opacity: 0.3;
+        --glow-spread: 8px;
+        --glow-opacity: 0.1;
         position: relative;
         display: inline-block;
         color: var(--glow-color);
@@ -15,7 +15,7 @@
             0 0 var(--glow-spread) var(--glow-color),
             0 0 calc(var(--glow-spread) * 2) rgba(43, 255, 0, var(--glow-opacity)),
             0 0 calc(var(--glow-spread) * 3) rgba(43, 255, 0, calc(var(--glow-opacity) * 0.5));
-        animation: pulse 2s infinite;
+        animation: pulse 4s infinite;
     }
 
     @keyframes pulse {
