@@ -1,4 +1,5 @@
 <!-- src/lib/components/scanlines.svelte -->
+<!-- Inspiration from https://dev.to/ekeijl -->
 <div class="scanlines">
     <slot></slot>
 </div>
