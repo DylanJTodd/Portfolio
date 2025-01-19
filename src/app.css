@@ -1,3 +1,13 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+html {
+    background-color: black;
+    color: #36A53E;
+    font-family: "Share Tech Mono", serif;
+    font-size: 150%;
+    font-weight: 700;
+    text-transform: uppercase;
+}
