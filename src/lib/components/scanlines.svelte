@@ -11,7 +11,7 @@
         --scan-fps: 60;
         --scan-color: rgba(0, 0, 0, 0.4);
         --scan-moving-color: rgba(255, 255, 255, 0.08);
-        --scan-z-index: 2147483648;
+        --scan-z-index: 2;
         --scan-moving-line: true;
         position: absolute;
         top: 0;
