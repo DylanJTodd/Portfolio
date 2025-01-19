@@ -18,3 +18,8 @@ html {
     font-weight: ligher;
     text-transform: uppercase;
 }
+
+::selection {
+    background-color: rgba(255, 255, 0, 0.8); /* Bright yellow highlight */
+    color: black; /* Text color within the highlight */
+}
