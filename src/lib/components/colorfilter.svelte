@@ -1,7 +1,7 @@
 <!-- src/lib/components/ColorFilter.svelte -->
 <script lang="ts">
     export let color: string = '#00ff00';
-    export let opacity: number = 0.5;
+    export let opacity: number = 0.4;
 </script>
 
 <div class="color-filter">
