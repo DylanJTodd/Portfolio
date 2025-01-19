@@ -4,8 +4,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
 html {
-    background-color: black;
-    color: #36A53E;
+    background: radial-gradient(
+        circle at center,
+        rgb(35, 35, 35) 0%,
+        rgb(25, 25, 25) 20%,
+        rgb(15, 15, 15) 40%,
+        rgb(8, 8, 8) 60%,
+        rgb(0, 0, 0) 100%
+    ) no-repeat center center fixed;
+    color: white;
     font-family: "Share Tech Mono", serif;
     font-size: 150%;
     font-weight: 700;
