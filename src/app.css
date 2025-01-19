@@ -20,6 +20,6 @@ html {
 }
 
 ::selection {
-    background-color: rgba(255, 255, 0, 0.8); /* Bright yellow highlight */
+    background-color: rgba(255, 255, 255, 0.8); /* Bright yellow highlight */
     color: black; /* Text color within the highlight */
 }

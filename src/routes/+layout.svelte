@@ -1,5 +1,5 @@
 <script lang="ts">
-	import '../app.css';
+	import '/src/app.css';
 	let { children } = $props();
 	import TerminalEffect from '$lib/components/terminaleffect.svelte';
 </script>
