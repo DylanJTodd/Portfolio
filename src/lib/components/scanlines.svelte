@@ -6,11 +6,11 @@
 <style>
     .scanlines {
         --scan-width: 2px;
-        --scan-moving-line-width: 60px;
+        --scan-moving-line-width: 50vh;
         --scan-crt: true;
         --scan-fps: 60;
-        --scan-color: rgba(0, 0, 0, 0.4);
-        --scan-moving-color: rgba(255, 255, 255, 0.08);
+        --scan-color: rgba(0, 0, 0, 0.2);
+        --scan-moving-color: rgba(255, 255, 255, 0.01);
         --scan-z-index: 2;
         --scan-moving-line: true;
         position: absolute;
@@ -36,15 +36,21 @@
         padding: 0;
     }
 
-    /* Traveling white line */
+    /* Traveling white line with long gradient fade */
     .scanlines::before {
         width: 100%;
         height: var(--scan-moving-line-width);
         z-index: calc(var(--scan-z-index) + 1);
-        background: var(--scan-moving-color);
+        background: linear-gradient(
+            to bottom,
+            var(--scan-moving-color) 0%,
+            var(--scan-moving-color) 20%,
+            rgba(255, 255, 255, 0.03) 60%,
+            rgba(255, 255, 255, 0.01) 80%,
+            transparent 100%
+        );
         opacity: 1;
         animation: scanline 6s linear infinite;
-        box-shadow: 0 0 10px 1px var(--scan-moving-color);
     }
 
     /* Static scanlines with wobble */
@@ -66,11 +72,11 @@
     }
 
     @keyframes scanline {
-        0%, 25% {
-            transform: translate3d(0, 100vh, 0);
+        0% {
+            transform: translate3d(0, 120vh, 0);
         }
         100% {
-            transform: translate3d(0, -100vh, 0);
+            transform: translate3d(0, -120vh, 0);
         }
     }
 
