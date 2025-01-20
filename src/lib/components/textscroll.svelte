@@ -17,17 +17,18 @@
         }
         isProcessingQueue = false;
     }
-    </script>
+</script>
     
-    <script lang="ts">
-    import { onDestroy } from 'svelte';
-    import { onMount } from 'svelte';
+<script lang="ts">
+    import { onDestroy, onMount, createEventDispatcher } from 'svelte';
     
+    const dispatch = createEventDispatcher();
+
     export let text: string = "";
     export let typingSpeed: number = 50;
     export let startDelay: number = 0;
     export let hideCaretManually: boolean = false;
-    export let audioPlay: boolean = true; // New property
+    export let audioPlay: boolean = true;
     
     let displayedText: string = "";
     let isCaretVisible: boolean = true;
@@ -100,6 +101,9 @@
         }
     
         isAnyScrolling.set(false);
+        
+        // Dispatch the animation complete event
+        dispatch('animationComplete');
     }
     
     async function typeText() {
@@ -133,15 +137,15 @@
             clearInterval(blinkInterval);
         };
     });
-    </script>
+</script>
     
-    <div class="terminal-text">
-        <p class="text-content">
-            {displayedText}{#if showCaret}<span class="caret" class:visible={isCaretVisible}></span>{/if}
-        </p>
-    </div>
+<div class="terminal-text">
+    <p class="text-content">
+        {displayedText}{#if showCaret}<span class="caret" class:visible={isCaretVisible}></span>{/if}
+    </p>
+</div>
     
-    <style>
+<style>
     .caret {
         display: inline-block;
         width: 10px;
@@ -157,4 +161,4 @@
     .caret.visible {
         opacity: 1;
     }
-    </style>
+</style>
