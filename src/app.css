@@ -3,6 +3,12 @@
 @import 'tailwindcss/utilities';
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
 html {
     background: radial-gradient(
         circle at center,
@@ -17,9 +23,37 @@ html {
     font-size: calc(1rem + 1vw);
     font-weight: ligher;
     text-transform: uppercase;
+    overflow: hidden;
+}
+
+main {
+    padding: 10px;
+    margin: 10px;
+    width: 100%;
+    height: 100%;
+}
+
+.terminal-opening {
+    margin-left: 24.5vw;
+    width: 100%;
+    height: 100%;
+}
+
+.terminal-choice {
+    all: unset;
 }
 
 ::selection {
-    background-color: rgba(255, 255, 255, 0.8); /* Bright yellow highlight */
-    color: black; /* Text color within the highlight */
+    background-color: rgba(255, 255, 255, 0.8);
+    color: black;
+}
+
+.choice-selected {
+    background-color: rgba(187, 187, 187, 0.8);
+    color: black;
+    width: 100%;
+}
+
+.choice-list {
+    width: 73%;
 }

@@ -14,6 +14,8 @@
             var(--base-offset) 0 var(--flicker-color);
         animation: flicker 0.2s infinite steps(1);
         pointer-events: auto; /* Ensure it allows interactions */
+        width: 100%;
+        height: 100%;
     }
 
     @keyframes flicker {
