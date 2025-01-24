@@ -1,3 +1,4 @@
+<!-- src/lib/components/choiceselector.svelte -->
 <script lang="ts">
     import { onMount } from 'svelte';
 
@@ -23,6 +24,15 @@
         }
     }
 
+    function handleClick(index: number) {
+        currentIndex = index;
+        onSelect(index);
+    }
+
+    function handleHover(index: number) {
+        currentIndex = index;
+    }
+
     onMount(() => {
         window.addEventListener('keydown', handleKeydown);
         return () => window.removeEventListener('keydown', handleKeydown);
@@ -33,7 +43,8 @@
     <button 
         class="terminal-choice"
         class:choice-selected={i === currentIndex}
-        on:click={() => onSelect(i)}
+        on:click={() => handleClick(i)}
+        on:mouseenter={() => handleHover(i)}
     >
         [{choice}]
     </button>
