@@ -1,6 +1,8 @@
 <script lang="ts">
     import TextScroll from '$lib/components/textscroll.svelte';
+    import ChoiceSelector from '$lib/components/choiceselector.svelte';
     let choiceList: HTMLParagraphElement;
+    let showChoices = false;
 </script>
 
 <section class="terminal-opening">
@@ -15,10 +17,16 @@
     }}/>
     <TextScroll hideCaretManually={true} startDelay={500} audioPlay={false} /><br>
 
-
     <p class="choice-list" bind:this={choiceList}>
-        <button class="terminal-choice choice-selected">[Enable Audio]</button><br>
-        <button class="terminal-choice">[Disable Audio]</button>
+        <ChoiceSelector 
+            choices={['Enable Audio', 'Disable Audio', 'Exit']}
+            onSelect={(index) => console.log(`Selected ${index + 1}`)}
+        />
     </p>
 </section>
 
+<style>
+    .choice-list {
+        visibility: hidden;
+    }
+</style>
