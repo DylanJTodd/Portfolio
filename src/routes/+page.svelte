@@ -7,12 +7,12 @@
     let terminalSection: HTMLElement;
     let choiceList: HTMLParagraphElement;
     let showContent = true;
-    let currentStep = 1; // Add this to manage which content to show
+    let currentStep = 1;
 
     function clearTerminal() {
         showContent = false;
         setTimeout(() => {
-            currentStep = 2; // Move to next step
+            currentStep += 1;
             showContent = true;
         }, 1000);
     }
