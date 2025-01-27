@@ -13,3 +13,7 @@
 - Switching selection noise
 - Mouse click noise
 - Idle noise
+
+## Accessibility
+- Add TTS option in configuration?
+- Add color changing for visually impaired/style
