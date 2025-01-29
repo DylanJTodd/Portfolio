@@ -5,7 +5,7 @@
 ### Configuration
 - ~~Add terminal color configuration~~
 - add ability to log in / create account
-- 
+
 ## State
 - Save global variables to cookies
 - Load cookies before running config (skip applicable parts) 
