@@ -1,5 +1,11 @@
 # TODO
 
+## Pages:
+
+### Configuration
+- ~~Add terminal color configuration~~
+- add ability to log in / create account
+- 
 ## State
 - Save global variables to cookies
 - Load cookies before running config (skip applicable parts) 
@@ -8,7 +14,7 @@
 - Custom cursor
 
 ## Sound
-- Make booting noise
+- Make booting noise (multiple noises, old tv start up, click clacks, etc)
 - Choice select noise
 - Switching selection noise
 - Mouse click noise
