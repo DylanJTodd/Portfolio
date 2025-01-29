@@ -1,12 +1,12 @@
 <!-- src/lib/components/ColorFilter.svelte -->
 <script lang="ts">
-    export let color: string = '#00ff00';
+    import { terminalColor } from '$lib/stores';
     export let opacity: number = 0.4;
 </script>
 
 <div class="color-filter">
     <slot></slot>
-    <div class="overlay-color" style="--filter-color: {color}; --filter-opacity: {opacity}"></div>
+    <div class="overlay-color" style="--filter-color: {$terminalColor}; --filter-opacity: {opacity}"></div>
     <div class="overlay-desaturate"></div>
 </div>
 
@@ -40,5 +40,11 @@
         z-index: 3;
         mix-blend-mode: saturation;
         pointer-events: none;
+    }
+
+    :global(.color-box) {
+        position: relative;
+        z-index: 5;
+        mix-blend-mode: normal;
     }
 </style>
