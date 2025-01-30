@@ -29,3 +29,4 @@
 
 ## Bugs
 - Fix weird styling issues when emulating on mobile device (waiting until I can actually test on a real mobile device)
+- Make textscroll handle input as html rather than plaintext. (I wonder if just adding spaces will work if so?)
