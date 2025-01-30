@@ -1,17 +1,15 @@
 <script lang="ts">
     import TextScroll from '$lib/components/textscroll.svelte';
     import ChoiceSelector from '$lib/components/choiceselector.svelte';
-    import ColorSelector from '$lib/components/colorselector.svelte';
     import ColorFilter from '$lib/components/colorfilter.svelte';
 
     import { goto } from '$app/navigation';
-    import { audioEnabled, terminalColor } from '$lib/stores';
+    import { audioEnabled} from '$lib/stores';
     import { fly } from 'svelte/transition';
 
     let terminalSection: HTMLElement;
     let choiceList: HTMLParagraphElement;
     let showContent = true;
-    let currentStep = 1;
 </script>
 <ColorFilter>
     {#if showContent}
@@ -26,7 +24,7 @@
 
         <p class="choice-list" bind:this={choiceList}>
             <ChoiceSelector 
-                choices={['Projects', 'About me']}
+                choices={['Projects', 'About']}
                 onSelect={(index) => {
                     if (index === 0) goto('/projects');
                     if (index === 1) goto('about');

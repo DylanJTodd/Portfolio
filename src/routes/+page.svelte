@@ -79,6 +79,8 @@
         {:else if currentStep === 3}
             <TextScroll audioPlay={$audioEnabled} typingSpeed={75} text={"Colors configured."}/>
             <TextScroll startDelay={400} audioPlay={$audioEnabled} typingSpeed={75} text="..."/>
+            <TextScroll startDelay={800} audioPlay={$audioEnabled} typingSpeed={100} text="... OK"/><br><br>
+            <TextScroll startDelay={200} audioPlay={$audioEnabled} typingSpeed={50} text="Configuration complete..."/> <br>
             <TextScroll startDelay={1000} audioPlay={$audioEnabled} typingSpeed={75} text="Log In" on:animationComplete={() => { 
                 if (choiceList) {
                     choiceList.style.visibility = 'visible';
