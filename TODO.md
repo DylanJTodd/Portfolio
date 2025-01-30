@@ -1,7 +1,10 @@
 # TODO
 
 ## Pages:
-
+- Add portfolio page content
+- Add about page content
+- Add Fallout style terminal hacking
+  
 ### Configuration
 - ~~Add terminal color configuration~~
 - add ability to log in / create account
@@ -23,3 +26,6 @@
 ## Accessibility
 - Add TTS option in configuration?
 - Add color changing for visually impaired/style
+
+## Bugs
+- Fix weird styling issues when emulating on mobile device
