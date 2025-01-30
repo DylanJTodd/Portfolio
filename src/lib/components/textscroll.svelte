@@ -161,4 +161,8 @@
     .caret.visible {
         opacity: 1;
     }
+
+    .terminal-text{
+        margin-left: 10vw;
+    }
 </style>

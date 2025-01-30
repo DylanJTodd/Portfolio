@@ -3,8 +3,8 @@
 	let { children } = $props();
 	import TerminalEffect from '$lib/components/terminaleffect.svelte';
 </script>
-<TerminalEffect>
-    <main>
+<main style="margin-left: 10vw;">
+	<TerminalEffect>
 		{@render children()}
-    </main>
-</TerminalEffect>
+	</TerminalEffect>
+</main>

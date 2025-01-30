@@ -25,6 +25,9 @@ html {
     text-transform: uppercase;
     overflow: hidden;
     min-height: 100%;
+    width: 100%;
+    margin-left: 10vw;
+    padding: 2rem;
     -webkit-text-size-adjust: 100%;
 }
 
@@ -35,8 +38,11 @@ main {
     height: 100%;
 }
 
+section{
+    width: 100%;
+}
+
 .terminal-opening {
-    margin-left: 10vw;
     width: 100%;
     height: 100%;
     position: relative;
@@ -44,7 +50,7 @@ main {
 }
 
 @media screen and (max-width: 768px) {
-    .terminal-opening {
+    html {
         margin-left: 5vw;
         padding: 1rem;
     }
