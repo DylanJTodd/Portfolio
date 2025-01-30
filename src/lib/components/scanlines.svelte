@@ -74,10 +74,10 @@
 
     @keyframes scanline {
         0% {
-            transform: translate3d(0, 120vh, 0);
+            transform: translate3d(0, 100%, 0);
         }
         100% {
-            transform: translate3d(0, -120vh, 0);
+            transform: translate3d(0, -100%, 0);
         }
     }
 

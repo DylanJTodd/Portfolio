@@ -4,6 +4,8 @@
     import ChoiceSelector from '$lib/components/choiceselector.svelte';
     import ColorSelector from '$lib/components/colorselector.svelte';
     import ColorFilter from '$lib/components/colorfilter.svelte';
+
+    import { goto } from '$app/navigation';
     import { audioEnabled, terminalColor } from '$lib/stores';
     import { fly } from 'svelte/transition';
 
@@ -30,7 +32,7 @@
         out:fly="{{ y: -1000, duration: 1000 }}"
     >
         {#if currentStep === 1}
-            <TextScroll audioPlay={false} typingSpeed={50} text="*************** PORTFOLIO-OS(R) V1.0.0 ***************"/><br><br>
+            <TextScroll audioPlay={$audioEnabled} typingSpeed={50} text="*************** PORTFOLIO-OS(R) V1.0.0 ***************"/><br><br>
             <TextScroll startDelay={1000} audioPlay={$audioEnabled} typingSpeed={75} text="Setting up configuration..."/>
             <TextScroll startDelay={400} audioPlay={$audioEnabled} typingSpeed={75} text="..."/>
             <TextScroll startDelay={700} audioPlay={$audioEnabled} typingSpeed={75} text="..."/><br>
@@ -54,7 +56,6 @@
 
         {:else if currentStep === 2}
             <TextScroll startDelay={400} audioPlay={$audioEnabled} typingSpeed={75} text="..."/>
-            <TextScroll startDelay={700} audioPlay={$audioEnabled} typingSpeed={75} text="..."/>
             <TextScroll startDelay={1000} audioPlay={$audioEnabled} typingSpeed={75} text="..."/><br>
             <TextScroll startDelay={500} audioPlay={$audioEnabled} typingSpeed={75} text={$audioEnabled ? "Audio Enabled" : "Audio Disabled"}/>
             <TextScroll audioPlay={$audioEnabled} typingSpeed={50} text="Terminal Color Configuration" hideCaretManually={true}/><br>
@@ -90,7 +91,7 @@
                 <ChoiceSelector 
                     choices={['Log In', 'Use Guest Mode']}
                     onSelect={(index) => {
-                        clearTerminal();
+                        goto('/navigation');
                     }}
                 />
             </p>
@@ -98,14 +99,3 @@
     </section>
     {/if}
 </ColorFilter>
-
-<style>
-    .choice-list {
-        visibility: hidden;
-    }
-
-    .terminal-opening {
-        position: relative;
-        padding: 2rem;
-    }
-</style>
