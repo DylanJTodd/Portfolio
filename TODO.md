@@ -28,4 +28,4 @@
 - Add color changing for visually impaired/style
 
 ## Bugs
-- Fix weird styling issues when emulating on mobile device
+- Fix weird styling issues when emulating on mobile device (waiting until I can actually test on a real mobile device)
