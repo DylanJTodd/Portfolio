@@ -5,7 +5,6 @@
     import TextGlow from '$lib/components/textglow.svelte';
 
     // Properties for ColorFilter
-    export let color: string = '#00ff00';
     export let opacity: number = 0.4;
     
     // Properties for Scanlines
@@ -43,7 +42,7 @@
       {flickerColor}
       {baseOffset}
     >
-      <ColorFilter {color} {opacity}>
+      <ColorFilter {opacity}>
         <TextGlow 
           {glowColor}
           {glowSpread}
