@@ -25,12 +25,7 @@
 
 <ColorFilter>
     {#if showContent}
-    <section 
-        class="terminal-opening" 
-        bind:this={terminalSection}
-        in:fly="{{ y: 0, duration: 1000 }}"
-        out:fly="{{ y: -1000, duration: 1000 }}"
-    >
+    <section class="terminal-opening" bind:this={terminalSection} in:fly="{{ y: 0, duration: 1000 }}" out:fly="{{ y: -1000, duration: 1000 }}">
         {#if currentStep === 1}
             <TextScroll audioPlay={$audioEnabled} typingSpeed={50} text="*************** PORTFOLIO-OS(R) V1.0.0 ***************"/><br><br>
             <TextScroll startDelay={1000} audioPlay={$audioEnabled} typingSpeed={75} text="Setting up configuration..."/>
