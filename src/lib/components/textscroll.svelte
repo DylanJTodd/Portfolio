@@ -144,25 +144,3 @@
         {displayedText}{#if showCaret}<span class="caret" class:visible={isCaretVisible}></span>{/if}
     </p>
 </div>
-    
-<style>
-    .caret {
-        display: inline-block;
-        width: 10px;
-        height: 1em;
-        background-color: #d1d1d1;
-        opacity: 0;
-        position: relative;
-        vertical-align: text-bottom;
-        margin-left: 1px;
-        margin-bottom: 3px;
-    }
-    
-    .caret.visible {
-        opacity: 1;
-    }
-
-    .terminal-text{
-        margin-left: 10vw;
-    }
-</style>

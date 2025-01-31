@@ -26,7 +26,6 @@ html {
     overflow: hidden;
     min-height: 100%;
     width: 100%;
-    margin-left: 10vw;
     padding: 2rem;
     -webkit-text-size-adjust: 100%;
 }
@@ -49,13 +48,6 @@ section{
     padding: 2rem;
 }
 
-@media screen and (max-width: 768px) {
-    html {
-        margin-left: 5vw;
-        padding: 1rem;
-    }
-}
-
 .terminal-choice {
     all: unset;
 }
@@ -71,7 +63,42 @@ section{
     width: 100%;
 }
 
-.choice-list {
+.choice-list{
     width: 70%;
     visibility: hidden;
+    margin-left: 10vw;
+}
+
+@media screen and (max-width: 768px) {
+    .choice-list{
+        width: 70%;
+        visibility: hidden;
+        margin-left: 5vw;
+    }
+}
+
+.caret {
+    display: inline-block;
+    width: 10px;
+    height: 1em;
+    background-color: #d1d1d1;
+    opacity: 0;
+    position: relative;
+    vertical-align: text-bottom;
+    margin-left: 1px;
+    margin-bottom: 3px;
+}
+
+.caret.visible {
+    opacity: 1;
+}
+
+.terminal-text{
+    margin-left: 10vw;
+}
+
+@media screen and (max-width: 768px) {
+    .terminal-text {
+        margin-left: 5vw;
+    }
 }
