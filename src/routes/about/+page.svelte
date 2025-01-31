@@ -12,10 +12,15 @@
     let showContent = true;
     let currentStep = 1;
 
-    function clearTerminal() {
+    function clearTerminal(page: number) {
         showContent = false;
         setTimeout(() => {
-            currentStep += 1;
+            if (page == 1){
+                currentStep = 1
+            }
+            if (page == 2){
+                currentStep = 2
+            }
             showContent = true;
         }, 1000);
     }
@@ -42,7 +47,7 @@
                 <ChoiceSelector 
                     choices={['About me', 'View on Github','Back to Directory Listing']}
                     onSelect={(index) => {
-                        if (index === 0) clearTerminal();
+                        if (index === 0) clearTerminal(2);
                         if (index === 1) window.open('https://github.com/DylanJTodd/Portfolio', '_blank');
                         if (index === 2) goto('/navigation');
                     }}
