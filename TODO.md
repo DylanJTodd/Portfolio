@@ -26,6 +26,7 @@
 ## Accessibility
 - Add TTS option in configuration?
 - Add color changing for visually impaired/style
+- Press enter while typing to skip all text scrolls and show all text.
 
 ## Bugs
 - Fix weird styling issues when emulating on mobile device (waiting until I can actually test on a real mobile device)
