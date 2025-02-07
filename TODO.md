@@ -31,4 +31,4 @@
 ## Bugs
 - Fix weird styling issues when emulating on mobile device (waiting until I can actually test on a real mobile device)
 - Make textscroll handle input as html rather than plaintext. (I wonder if just adding spaces will work if so?)
-- Add scrolling (no scrollbar)
+- Add scrolling (no scrollbar) OR do what fallout does (UI showing there's more text below, use arrow to go down.)
