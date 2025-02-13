@@ -38,9 +38,10 @@
             }}/>
             <TextScroll hideCaretManually={true} startDelay={500} audioPlay={false} /><br>
 
-            <p class="choice-list" bind:this={choiceList}>
+            <p class="choice-list" bind:this={choiceList} style="visibility: hidden;">
                 <ChoiceSelector 
-                    choices={['Enable Audio', 'Disable Audio']}
+                    choices={['Enable Audio', 'Disable Audio']} 
+                    isActive={choiceList?.style.visibility === 'visible'}
                     onSelect={(index) => {
                         if (index === 0) $audioEnabled = true;
                         if (index === 1) $audioEnabled = false;
@@ -60,7 +61,7 @@
                 }
             }}/>
 
-            <p class="choice-list" bind:this={choiceList}>
+            <p class="choice-list" bind:this={choiceList} style="visibility: hidden;">
                 <ColorSelector 
                     onColorSelect={(color) => {
                         $terminalColor = color;
@@ -84,9 +85,10 @@
 
             <TextScroll hideCaretManually={true} startDelay={500} audioPlay={$audioEnabled} /><br>
 
-            <p class="choice-list" bind:this={choiceList}>
+            <p class="choice-list" bind:this={choiceList} style="visibility: hidden;">
                 <ChoiceSelector 
                     choices={['Log In', 'Use Guest Mode']}
+                    isActive={choiceList?.style.visibility === 'visible'}
                     onSelect={(index) => {
                         goto('/navigation');
                     }}

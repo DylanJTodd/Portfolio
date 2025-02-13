@@ -22,11 +22,12 @@
         }}/>
         <TextScroll hideCaretManually={true} startDelay={500} audioPlay={false} /><br>
 
-        <p class="choice-list" bind:this={choiceList}>
+        <p class="choice-list" bind:this={choiceList} style="visibility: hidden;">
             <ChoiceSelector 
                 choices={['Projects', 'About']}
+                isActive={choiceList?.style.visibility === 'visible'}
                 onSelect={(index) => {
-                    if (index === 0) goto('/projects');
+                    if (index === 0) goto('projects');
                     if (index === 1) goto('about');
                 }}
             />
