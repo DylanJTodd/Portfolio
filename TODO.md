@@ -2,7 +2,7 @@
 
 ## Pages:
 - Add portfolio page content
-- Add about page content
+- ~~Add about page content~~
 - Add Fallout style terminal hacking
   
 ### Configuration
@@ -25,9 +25,10 @@
 
 ## Accessibility
 - Add TTS option in configuration?
-- Add color changing for visually impaired/style
-- Press enter while typing to skip all text scrolls and show all text.
+- ~~Add color changing for visually impaired/style~~
+- ~~Press enter while typing to skip all text scrolls and show all text.~~
 
 ## Bugs
 - Fix weird styling issues when emulating on mobile device (waiting until I can actually test on a real mobile device)
-- Add scrolling (no scrollbar) OR do what fallout does (UI showing there's more text below, use arrow to go down.) (will need to ensure textscroll is not absolute)
+- ~~Make textscroll handle input as html rather than plaintext. (I wonder if just adding spaces will work if so?)~~
+- ~~Add scrolling (no scrollbar) OR do what fallout does (UI showing there's more text below, use arrow to go down.) (will need to ensure textscroll is not absolute)~~
