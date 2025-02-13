@@ -29,29 +29,24 @@
     {#if showContent}
     <section class="terminal-opening" bind:this={terminalSection} in:fly="{{ y: 0, duration: 1000 }}" out:fly="{{ y: -1000, duration: 1000 }}">
         {#if currentStep === 1}
-            <TextScroll startDelay={200} audioPlay={$audioEnabled} typingSpeed={40} text="Hello! My name is Dylan Todd. Thank you for viewing my portfolio website. First I'm going to describe this website a little bit, and then talk about myself."/><br>
-            <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={40} text="So to start, this website was created for a web design class in my 3rd year of university, based on the Fallout 4 terminal. It uses the LAMP stack, namely Linux, Apache, MYSQL, and PHP."/><br>
-            <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={40} text="Apache is hosted with XAMPP, MySQL through phpMyAdmin, and PHP using PDO. The domain was gotten through namecheap, and the server is hosted via the free oracle tier."/> <br>
-            <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={40} text="My front end was done using Sveltekit, and I used typescript as well instead of javascript. Originally, I planned on using TailwindCSS but due to course requirements this wasn't feasible."/> <br> 
-
-            <TextScroll startDelay={200} audioPlay={$audioEnabled} typingSpeed={1} text="Hello! My name is Dylan Todd. Thank you for viewing my portfolio website. First I'm going to describe this website a little bit, and then talk about myself."/><br>
-            <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={1} text="So to start, this website was created for a web design class in my 3rd year of university, based on the Fallout 4 terminal. It uses the LAMP stack, namely Linux, Apache, MYSQL, and PHP."/><br>
-            <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={1} text="Apache is hosted with XAMPP, MySQL through phpMyAdmin, and PHP using PDO. The domain was gotten through namecheap, and the server is hosted via the free oracle tier."/> <br>
-            <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={1} text="My front end was done using Sveltekit, and I used typescript as well instead of javascript. Originally, I planned on using TailwindCSS but due to course requirements this wasn't feasible."/> <br> 
-
+            <TextScroll startDelay={200} audioPlay={$audioEnabled} typingSpeed={30} text="Hello! My name is Dylan Todd. Thank you for viewing my portfolio website. First I'm going to describe this website a little bit, and then talk about myself."/><br>
+            <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={30} text="So to start, this website was created for a web design class in my 3rd year of university, based on the Fallout 4 terminal. It uses the LAMP stack, namely Linux, Apache, MYSQL, and PHP."/><br>
+            <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={30} text="Apache is hosted with XAMPP, MySQL through phpMyAdmin, and PHP using PDO. The domain was gotten through namecheap, and the server is hosted via the free oracle tier."/> <br>
+            <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={30} text="My front end was done using Sveltekit, and I used typescript as well instead of javascript. Originally, I planned on using TailwindCSS but due to course requirements this wasn't feasible."/> <br> 
 
             <!-- Insert short description of back end technologies -->
 
-            <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={40} text="If you'd like, you can view the code on github, learn a little more about me, or go back to the main directory listing." on:animationComplete={() => {
+            <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={30} text="If you'd like, you can view the code on github, learn a little more about me, or go back to the main directory listing." on:animationComplete={() => {
                 if (choiceList) {
                     choiceList.style.visibility = 'visible';
                 }
             }}/>
             <TextScroll hideCaretManually={true} startDelay={500} audioPlay={false} /><br>
 
-            <p class="choice-list" bind:this={choiceList}>
+            <p class="choice-list" bind:this={choiceList} style="visibility: hidden;">
                 <ChoiceSelector 
                     choices={['About me', 'View on Github','Back to Directory Listing']}
+                    isActive={choiceList?.style.visibility === 'visible'}
                     onSelect={(index) => {
                         if (index === 0) clearTerminal(2);
                         if (index === 1) window.open('https://github.com/DylanJTodd/Portfolio', '_blank');
@@ -74,9 +69,10 @@
 
             <TextScroll hideCaretManually={true} startDelay={500} audioPlay={false} /><br>
 
-            <p class="choice-list" bind:this={choiceList}>
+            <p class="choice-list" bind:this={choiceList} style="visibility: hidden;">
                 <ChoiceSelector 
                     choices={['View my Github','View my LinkedIn', 'About the project', 'Back to Directory Listing']}
+                    isActive={choiceList?.style.visibility === 'visible'}
                     onSelect={(index) => {
                         if (index === 0) window.open('https://github.com/DylanJTodd/Portfolio', '_blank');
                         if (index === 1) window.open('https://www.linkedin.com/in/dylan-j-todd/', '_blank');

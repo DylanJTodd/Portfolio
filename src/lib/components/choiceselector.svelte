@@ -1,13 +1,16 @@
-<!-- src/lib/components/choiceselector.svelte -->
 <script lang="ts">
     import { onMount } from 'svelte';
-
+    
     export let choices: string[] = [];
     export let onSelect: (index: number) => void;
-
+    export let isActive: boolean = false; // New prop to control listener
+    
     let currentIndex = 0;
-
+    let keydownListener: ((event: KeyboardEvent) => void) | null = null;
+    
     function handleKeydown(event: KeyboardEvent) {
+        if (!isActive) return; // Early return if not active
+        
         switch (event.key) {
             case 'ArrowUp':
                 event.preventDefault();
@@ -23,24 +26,31 @@
                 break;
         }
     }
-
+    
     function handleClick(index: number) {
+        if (!isActive) return;
         currentIndex = index;
         onSelect(index);
     }
-
+    
     function handleHover(index: number) {
+        if (!isActive) return;
         currentIndex = index;
     }
-
+    
     onMount(() => {
-        window.addEventListener('keydown', handleKeydown);
-        return () => window.removeEventListener('keydown', handleKeydown);
+        keydownListener = handleKeydown;
+        window.addEventListener('keydown', keydownListener);
+        return () => {
+            if (keydownListener) {
+                window.removeEventListener('keydown', keydownListener);
+            }
+        };
     });
-</script>
-
-{#each choices as choice, i}
-    <button 
+    </script>
+    
+    {#each choices as choice, i}
+    <button
         class="terminal-choice"
         class:choice-selected={i === currentIndex}
         on:click={() => handleClick(i)}
@@ -49,4 +59,4 @@
         [{choice}]
     </button>
     {#if i < choices.length - 1}<br>{/if}
-{/each}
+    {/each}

@@ -1,6 +1,6 @@
-<!-- TextScroller.svelte -->
 <script lang="ts" context="module">
     import { writable } from 'svelte/store';
+    
     const isAnyScrolling = writable(false);
     const activeInstance = writable<string | null>(null);
     const queue: (() => Promise<void>)[] = [];
@@ -17,13 +17,13 @@
         }
         isProcessingQueue = false;
     }
-</script>
+    </script>
     
-<script lang="ts">
+    <script lang="ts">
     import { onDestroy, onMount, createEventDispatcher } from 'svelte';
     
     const dispatch = createEventDispatcher();
-
+    
     export let text: string = "";
     export let typingSpeed: number = 50;
     export let startDelay: number = 0;
@@ -36,6 +36,9 @@
     let audioLength: number;
     let hasStarted = false;
     let instanceId = crypto.randomUUID();
+    let isTyping = false;
+    let skipAnimation = false;
+    let componentElement: HTMLDivElement;
     
     $: showCaret = $activeInstance === instanceId && !hideCaretManually;
     
@@ -62,15 +65,33 @@
         typingAudio.loop = true;
     }
     
+    function handleKeydown(event: KeyboardEvent) {
+        if (event.key === 'Enter' && isTyping && $activeInstance === instanceId) {
+            event.preventDefault();
+            event.stopPropagation();
+            skipAnimation = true;
+            displayedText = text; // Immediately display full text
+            if (audioPlay && typingAudio) {
+                typingAudio.pause();
+                typingAudio.currentTime = 0;
+            }
+        }
+    }
+    
     onMount(() => {
+        window.addEventListener('keydown', handleKeydown);
         queue.push(animate);
         processQueue();
+        return () => {
+            window.removeEventListener('keydown', handleKeydown);
+        };
     });
     
     async function animate() {
         hasStarted = true;
         isAnyScrolling.set(true);
         activeInstance.set(instanceId);
+        isTyping = true;
     
         if (startDelay > 0) {
             await new Promise(resolve => setTimeout(resolve, startDelay));
@@ -101,14 +122,32 @@
         }
     
         isAnyScrolling.set(false);
-        
-        // Dispatch the animation complete event
+        isTyping = false;
+    
+        // Scroll to bottom after text is complete
+        const terminal = document.querySelector('.terminal-opening');
+        if (terminal) {
+            terminal.scrollTo({ top: terminal.scrollHeight, behavior: 'smooth' });
+        }
+    
         dispatch('animationComplete');
     }
     
     async function typeText() {
         for (let i = 0; i <= text.length; i++) {
+            if (skipAnimation) {
+                displayedText = text;
+                skipAnimation = false;
+                break;
+            }
             displayedText = text.slice(0, i);
+            
+            // Scroll while typing for smoother experience
+            const terminal = document.querySelector('.terminal-opening');
+            if (terminal) {
+                terminal.scrollTo({ top: terminal.scrollHeight, behavior: 'instant' });
+            }
+            
             await new Promise(resolve => setTimeout(resolve, typingSpeed));
         }
     }
@@ -137,10 +176,10 @@
             clearInterval(blinkInterval);
         };
     });
-</script>
+    </script>
     
-<div class="terminal-text">
-    <p class="text-content">
-        {displayedText}{#if showCaret}<span class="caret" class:visible={isCaretVisible}></span>{/if}
-    </p>
-</div>
+    <div class="terminal-text" bind:this={componentElement}>
+        <p class="text-content">
+            {displayedText}{#if showCaret}<span class="caret" class:visible={isCaretVisible}></span>{/if}
+        </p>
+    </div>
