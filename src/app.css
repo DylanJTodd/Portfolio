@@ -2,6 +2,9 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+*{
+    cursor: inherit;
+}
 
 html, body {
     height: 100%;   
