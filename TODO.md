@@ -14,7 +14,7 @@
 - Load cookies before running config (skip applicable parts) 
 
 ## UI
-- Custom cursor
+~~- Custom cursor~~
 
 ## Sound
 - Make booting noise (multiple noises, old tv start up, click clacks, etc)
