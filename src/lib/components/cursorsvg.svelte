@@ -4,7 +4,7 @@
     import { onMount } from 'svelte';
     
     $: darkerColor = $terminalColor.replace('#', '').match(/.{2}/g)
-      .map(hex => Math.max(0, parseInt(hex, 16) - 180).toString(16).padStart(2, '0'))
+      .map(hex => Math.max(0, parseInt(hex, 16) - 130).toString(16).padStart(2, '0'))
       .join('');
 
     $: svgString = `<svg xmlns="http://www.w3.org/2000/svg" width="35" height="40" viewBox="0 0 65 65">
