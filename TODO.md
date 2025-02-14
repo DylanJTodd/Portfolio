@@ -14,7 +14,7 @@
 - Load cookies before running config (skip applicable parts) 
 
 ## UI
-- Custom cursor
+~~- Custom cursor~~
 
 ## Sound
 - Make booting noise (multiple noises, old tv start up, click clacks, etc)
@@ -32,3 +32,14 @@
 - Fix weird styling issues when emulating on mobile device (waiting until I can actually test on a real mobile device)
 - ~~Make textscroll handle input as html rather than plaintext. (I wonder if just adding spaces will work if so?)~~
 - ~~Add scrolling (no scrollbar) OR do what fallout does (UI showing there's more text below, use arrow to go down.) (will need to ensure textscroll is not absolute)~~
+
+
+## Course requirements
+- In configuration, add current date and time, and time since last login
+- For project page, include image carousel
+- Have users with different levels of privelege
+- Add a contact me form, which sends me an email based on a form to fill out
+- Enable error handling
+- Normalize database to 3rd normal form
+- Use MySQL Workbench to create database diagrams. (Include in about section)
+- Create full database with 1 script
