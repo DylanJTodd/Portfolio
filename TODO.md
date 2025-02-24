@@ -29,7 +29,8 @@
 - ~~Press enter while typing to skip all text scrolls and show all text.~~
 
 ## Bugs
-- Fix weird styling issues when emulating on mobile device (waiting until I can actually test on a real mobile device)
+- Fix weird styling issues when emulating on mobile device
+- Fix spamming enter breaking the site
 - ~~Make textscroll handle input as html rather than plaintext. (I wonder if just adding spaces will work if so?)~~
 - ~~Add scrolling (no scrollbar) OR do what fallout does (UI showing there's more text below, use arrow to go down.) (will need to ensure textscroll is not absolute)~~
 
