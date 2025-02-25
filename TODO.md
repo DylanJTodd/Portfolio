@@ -15,6 +15,7 @@
 
 ## UI
 ~~- Custom cursor~~
+- Create header navigation bar (EG Directory > Projects > Test ) where text is clickable
 
 ## Sound
 - Make booting noise (multiple noises, old tv start up, click clacks, etc)
@@ -38,7 +39,7 @@
 
 ## Course requirements
 - In configuration, add current date and time, and time since last login
-- For project page, include image carousel
+- For project page, include image carousel (mouse only, small arrow to the right of the image, no left arrow, loops around).
 - Have users with different levels of privelege
 - Add a contact me form, which sends me an email based on a form to fill out
 - Enable error handling
