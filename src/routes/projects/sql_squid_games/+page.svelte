@@ -21,6 +21,9 @@
             if (page == 2){
                 currentStep = 2
             }
+            if (page == 3){
+                currentStep = 3
+            }
             showContent = true;
         }, 1000);
     }
@@ -29,8 +32,9 @@
 <ColorFilter>
     {#if showContent}
     <section class="terminal-opening" bind:this={terminalSection} in:fly="{{ y: 0, duration: 1000 }}" out:fly="{{ y: -1000, duration: 1000 }}">
-        <img src="/squid.jpg" alt="SQL Squid Games Home Page" style="float: right; margin-left: 1rem;"/><br>
+    <img src="/squid.jpg" alt="SQL Squid Games Home Page" style="float: right; margin-left: 1rem;"/><br>
 
+    {#if currentStep === 1} <!-- General Info -->
         <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={40} text="SQL Squid Games was a website I developed when I worked at DataLemur "/><br>
         <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={40} text="Although I cannot publicly provide the code, I am more than happy to explain what I did below."/><br>
         <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={40} text="The very first thing I did was user research. This meant scouring forums, reddit, social media, and watching both seasons over a weekend (crazy, right?)"/><br>
@@ -46,14 +50,61 @@
 
         <p class="choice-list" bind:this={choiceList} style="visibility: hidden;">
             <ChoiceSelector 
-                choices={['Visit The Site', 'Discover other projects']}
+                choices={['Learn about the frontend (UNDER CONSTRUCTION)', 'Learn about the backend (UNDER CONSTRUCTION)', 'Visit the site', 'Discover other projects']}
                 isActive={choiceList?.style.visibility === 'visible'}
                 onSelect={(index) => {
-                    if (index === 0) window.open('https://datalemur.com/sql-game', '_blank');
-                    if (index === 1) goto('../projects')
+                    if (index === 0) console.log("Under Construction1"); //clearTerminal(2)
+                    if (index === 1) console.log("Under Construction2"); //clearTerminal(3)
+                    if (index === 2) window.open('https://datalemur.com/sql-game', '_blank');
+                    if (index === 3) goto('../projects')
                 }}
             />
         </p>
+    {:else if currentStep === 2} <!-- Frontend Info -->
+        <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={40} text="Testing Frontend"/><br>
+
+        <TextScroll startDelay={1000} audioPlay={$audioEnabled} typingSpeed={50} text="" on:animationComplete={() => { 
+            if (choiceList) {
+                choiceList.style.visibility = 'visible';
+            }
+        }}/>
+        <TextScroll hideCaretManually={true} startDelay={500} audioPlay={false} /><br>
+
+            <p class="choice-list" bind:this={choiceList} style="visibility: hidden;"> <!-- Make this relevant, currently working on -->
+            <ChoiceSelector 
+                choices={['Learn about the frontend', 'Learn about the backend', 'Visit the site', 'Discover other projects']}
+                isActive={choiceList?.style.visibility === 'visible'}
+                onSelect={(index) => {
+                    if (index === 0) clearTerminal(2)
+                    if (index === 1) clearTerminal(3)
+                    if (index === 1) window.open('https://datalemur.com/sql-game', '_blank');
+                    if (index === 2) goto('../projects')
+                }}
+            />
+        </p>
+    {:else if currentStep === 3} <!-- Backend Info -->
+    <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={40} text="Testing Backend"/><br>
+
+        <TextScroll startDelay={1000} audioPlay={$audioEnabled} typingSpeed={50} text="" on:animationComplete={() => { 
+            if (choiceList) {
+                choiceList.style.visibility = 'visible';
+            }
+        }}/>
+        <TextScroll hideCaretManually={true} startDelay={500} audioPlay={false} /><br>
+
+        <p class="choice-list" bind:this={choiceList} style="visibility: hidden;"> <!-- Make this relevant, currently working on -->
+            <ChoiceSelector 
+                choices={['Learn about the frontend', 'Learn about the backend', 'Visit the site', 'Discover other projects']}
+                isActive={choiceList?.style.visibility === 'visible'}
+                onSelect={(index) => {
+                    if (index === 0) clearTerminal(2)
+                    if (index === 1) clearTerminal(3)
+                    if (index === 1) window.open('https://datalemur.com/sql-game', '_blank');
+                    if (index === 2) goto('../projects')
+                }}
+            />
+        </p>
+    {/if}
     </section>
     {/if}
 </ColorFilter>
