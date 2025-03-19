@@ -32,7 +32,7 @@
 
 ## Bugs
 - Fix weird styling issues when emulating on mobile device
-- ~~Fix spamming enter breaking the site~~
+- Fix spamming enter breaking the site (Still an issue, TextScroll Component)
 - ~~Fix glitchiness when scrolling during auto scroll (and make top of page visible until it doesn't need to be).~~
 - ~~Make textscroll handle input as html rather than plaintext. (I wonder if just adding spaces will work if so?)~~
 - ~~Add scrolling (no scrollbar) OR do what fallout does (UI showing there's more text below, use arrow to go down.) (will need to ensure textscroll is not absolute)~~
