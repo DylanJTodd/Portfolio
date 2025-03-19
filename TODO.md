@@ -2,6 +2,7 @@
 
 ## Pages:
 - Add portfolio page content
+- Add Settings page for configuration when logged in, as well as more like textSpeed
 - ~~Add about page content~~
 - Add Fallout style terminal hacking
   
@@ -10,8 +11,8 @@
 - add ability to log in / create account
 
 ## State
-- Save global variables to cookies
-- Load cookies before running config (skip applicable parts) 
+~~- Save global variables to cookies~~
+~~- Load cookies before running config (skip applicable parts)~~
 
 ## UI
 ~~- Custom cursor~~
