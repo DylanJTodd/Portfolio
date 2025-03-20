@@ -40,9 +40,9 @@
     let skipAnimation = false;
     let componentElement: HTMLDivElement;
     let lastSkipTime = 0;
-    const skipCooldown = 2000; // 2 second cooldown for Enter key
+    const skipCooldown = 1000; // 2 second cooldown for Enter key
     let animationStartTime = 0;
-    const minAnimationTimeBeforeSkip = 1000; // 1 second minimum before allowing skip
+    const minAnimationTimeBeforeSkip = 500; // 1 second minimum before allowing skip
     
     $: showCaret = $activeInstance === instanceId && !hideCaretManually;
     
@@ -71,19 +71,19 @@
     
     function handleKeydown(event: KeyboardEvent) {
         if (event.key === 'Enter' && isTyping && $activeInstance === instanceId) {
+            console.log("Enter skip");
             event.preventDefault();
             event.stopPropagation();
             
             const currentTime = Date.now();
             const timeSinceStart = currentTime - animationStartTime;
             
-            // Check if we're past the minimum animation time and cooldown period
             if (timeSinceStart >= minAnimationTimeBeforeSkip && 
                 currentTime - lastSkipTime >= skipCooldown) {
                 
                 skipAnimation = true;
                 lastSkipTime = currentTime;
-                displayedText = text; // Immediately display full text
+                displayedText = text;
                 
                 if (audioPlay && typingAudio) {
                     typingAudio.pause();
@@ -140,7 +140,6 @@
         isAnyScrolling.set(false);
         isTyping = false;
     
-        // Scroll to bottom after text is complete in a smooth manner
         const terminal = document.querySelector('.terminal-opening');
         if (terminal) {
             terminal.scrollTo({ top: terminal.scrollHeight, behavior: 'smooth' });
@@ -150,11 +149,9 @@
     }
     
     async function typeText() {
-        // Get initial terminal scroll position
         const terminal = document.querySelector('.terminal-opening');
         const initialScrollTop = terminal ? terminal.scrollTop : 0;
         
-        // Only start auto-scrolling after the first screen of content
         let shouldAutoScroll = false;
         let screenHeight = terminal ? terminal.clientHeight : 0;
         
@@ -167,23 +164,23 @@
             
             displayedText = text.slice(0, i);
             
-            // Check if we should start auto-scrolling
+            // AutoScrolling
             if (terminal) {
-                const contentHeight = componentElement.offsetHeight;
-                
-                // Only start auto-scrolling once we've filled the first screen
-                if (!shouldAutoScroll && contentHeight > screenHeight) {
-                    shouldAutoScroll = true;
-                }
-                
-                // Only scroll if we should be auto-scrolling
-                if (shouldAutoScroll) {
-                    // Ensure the newest content is visible by scrolling to show the last line
-                    const scrollPosition = Math.max(0, contentHeight - screenHeight);
-                    terminal.scrollTo({ top: scrollPosition, behavior: 'instant' });
-                } else {
-                    // Keep the top of the page visible until we need to scroll
-                    terminal.scrollTo({ top: initialScrollTop, behavior: 'instant' });
+                try {
+                    const contentHeight = componentElement.offsetHeight;
+                    
+                    if (!shouldAutoScroll && contentHeight > screenHeight) {
+                        shouldAutoScroll = true;
+                    }
+                    
+                    if (shouldAutoScroll) {
+                        const scrollPosition = Math.max(0, contentHeight - screenHeight);
+                        terminal.scrollTo({ top: scrollPosition, behavior: 'instant' });
+                    } else {
+                        terminal.scrollTo({ top: initialScrollTop, behavior: 'instant' });
+                    }
+                } catch (error) {
+                    console.error("Error during auto-scrolling:", error);
                 }
             }
             
