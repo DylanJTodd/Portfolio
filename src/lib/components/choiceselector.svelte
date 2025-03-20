@@ -10,8 +10,6 @@
     
     function handleKeydown(event: KeyboardEvent) {
         if (!isActive) return; // Early return if not active
-        console.log("Enter choice,");
-        console.log(isActive);
         switch (event.key) {
             case 'ArrowUp':
                 event.preventDefault();

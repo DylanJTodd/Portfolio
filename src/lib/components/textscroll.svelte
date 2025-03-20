@@ -71,7 +71,6 @@
     
     function handleKeydown(event: KeyboardEvent) {
         if (event.key === 'Enter' && isTyping && $activeInstance === instanceId) {
-            console.log("Enter skip");
             event.preventDefault();
             event.stopPropagation();
             
@@ -82,6 +81,7 @@
                 currentTime - lastSkipTime >= skipCooldown) {
                 
                 skipAnimation = true;
+                isTyping = false;
                 lastSkipTime = currentTime;
                 displayedText = text;
                 
