@@ -9,7 +9,7 @@
     let keydownListener: ((event: KeyboardEvent) => void) | null = null;
     
     function handleKeydown(event: KeyboardEvent) {
-        if (!isActive) return; // Early return if not active
+        if (!isActive) return;
         switch (event.key) {
             case 'ArrowUp':
                 event.preventDefault();

@@ -5,6 +5,7 @@
 
     export let onColorSelect: (color: string) => void;
     export let onContinue: () => void;
+    export let isActive: boolean;
 
     interface ColorOption {
         name: string;
@@ -44,6 +45,8 @@
     }
 
     function handleKeydown(event: KeyboardEvent) {
+        console.log(isActive);
+        if (!isActive) return;
         if (isHexMode) {
             if (event.key === 'Escape') {
                 exitHexMode();
@@ -51,7 +54,6 @@
             }
             return;
         }
-
         switch (event.key) {
             case 'ArrowUp':
                 event.preventDefault();

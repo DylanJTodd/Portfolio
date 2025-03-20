@@ -134,6 +134,7 @@
                     onContinue={() => {
                         clearTerminal();
                     }}
+                    isActive={choiceList?.style.visibility === 'visible'}
                 />
             </p>
 
