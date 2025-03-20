@@ -5,6 +5,13 @@
 - Add Settings page for configuration when logged in, as well as more like textSpeed
 - ~~Add about page content~~
 - Add Fallout style terminal hacking
+
+## Backend:
+- Use restful APIS to communicate from svelte frontend to mysql+php backend
+- Use PDO for data objects
+- Set up database
+- Connect frontend to backend
+- Implement storing/loading from database for different featueres (configuration/notes/contact form/...etc)
   
 ### Configuration
 - ~~Add terminal color configuration~~
@@ -32,7 +39,7 @@
 
 ## Bugs
 - Fix weird styling issues when emulating on mobile device
-- Fix spamming enter breaking the site (Still an issue, TextScroll Component)
+~~- Fix spamming enter breaking the site (Still an issue, TextScroll Component)~~
 - ~~Fix glitchiness when scrolling during auto scroll (and make top of page visible until it doesn't need to be).~~
 - ~~Make textscroll handle input as html rather than plaintext. (I wonder if just adding spaces will work if so?)~~
 - ~~Add scrolling (no scrollbar) OR do what fallout does (UI showing there's more text below, use arrow to go down.) (will need to ensure textscroll is not absolute)~~
