@@ -1,7 +1,7 @@
 <!-- src/lib/components/ColorSelector.svelte -->
 <script lang="ts">
     import { onMount } from 'svelte';
-    import { audioEnabled, terminalColor } from '$lib/stores';
+    import { audioEnabled, terminalColor } from '../stores/globalStore';
 
     export let onColorSelect: (color: string) => void;
     export let onContinue: () => void;
@@ -45,7 +45,6 @@
     }
 
     function handleKeydown(event: KeyboardEvent) {
-        console.log(isActive);
         if (!isActive) return;
         if (isHexMode) {
             if (event.key === 'Escape') {

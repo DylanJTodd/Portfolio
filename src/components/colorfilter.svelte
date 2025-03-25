@@ -1,6 +1,6 @@
 <!-- src/lib/components/ColorFilter.svelte -->
 <script lang="ts">
-    import { terminalColor } from '$lib/stores';
+    import { terminalColor } from '../stores/globalStore';
     export let opacity: number = 0.4;
 </script>
 

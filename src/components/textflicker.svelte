@@ -1,4 +1,9 @@
 <!-- src/lib/components/textflicker.svelte -->
+<script lang="ts">
+    export let flickerColor: string = 'color-mix(in srgb, currentColor 20%, transparent)';
+    export let baseOffset: number = 2.5;
+</script>
+
 <div class="text-flicker">
     <slot></slot>
 </div>

@@ -1,5 +1,16 @@
 <!-- src/lib/components/scanlines.svelte -->
 <!-- Inspiration from https://dev.to/ekeijl -->
+<script lang="ts">
+    export let scanWidth: string = '2px';
+    export let scanMovingLineWidth: string = '30vh';
+    export let scanCRT: boolean = true;
+    export let scanFPS: number = 60;
+    export let scanColor: string = 'rgba(0, 0, 0, 0.2)';
+    export let scanMovingColor: string = 'rgba(255, 255, 255, 0.01)';
+    export let scanZIndex: number = 2;
+    export let scanMovingLine: boolean = true;
+</script>
+
 <div class="scanlines">
     <slot></slot>
 </div>
@@ -51,7 +62,7 @@
             transparent 100%
         );
         opacity: 1;
-        animation: scanline 6s linear infinite;
+        animation: scanline 10s linear infinite;
     }
 
     /* Static scanlines with wobble */
@@ -74,7 +85,7 @@
 
     @keyframes scanline {
         0% {
-            transform: translate3d(0, 100%, 0);
+            transform: translate3d(0, 250%, 0);
         }
         100% {
             transform: translate3d(0, -100%, 0);

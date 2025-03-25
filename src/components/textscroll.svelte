@@ -40,9 +40,9 @@
     let skipAnimation = false;
     let componentElement: HTMLDivElement;
     let lastSkipTime = 0;
-    const skipCooldown = 1000; // 2 second cooldown for Enter key
+    const skipCooldown = 1000;
     let animationStartTime = 0;
-    const minAnimationTimeBeforeSkip = 500; // 1 second minimum before allowing skip
+    const minAnimationTimeBeforeSkip = 1000;
     
     $: showCaret = $activeInstance === instanceId && !hideCaretManually;
     
@@ -55,8 +55,8 @@
             return files[Math.floor(Math.random() * files.length)] as [string, number];
         } else {
             const files = [
-                ['/typing/normal1', 9.05],
-                ['/typing/normal2', 10.9]
+                ['/res/typing/normal1', 9.05],
+                ['/res/typing/normal2', 10.9]
             ];
             return files[Math.floor(Math.random() * files.length)] as [string, number];
         }
@@ -103,6 +103,7 @@
     });
     
     async function animate() {
+        if (isTyping) return;
         hasStarted = true;
         isAnyScrolling.set(true);
         activeInstance.set(instanceId);
@@ -150,40 +151,32 @@
     
     async function typeText() {
         const terminal = document.querySelector('.terminal-opening');
-        const initialScrollTop = terminal ? terminal.scrollTop : 0;
-        
-        let shouldAutoScroll = false;
-        let screenHeight = terminal ? terminal.clientHeight : 0;
-        
+        if (!terminal || !componentElement) return; // Ensure elements exist
+    
+        const screenHeight = terminal.clientHeight;
+    
         for (let i = 0; i <= text.length; i++) {
             if (skipAnimation) {
                 displayedText = text;
                 skipAnimation = false;
                 break;
             }
-            
+    
             displayedText = text.slice(0, i);
-            
-            // AutoScrolling
-            if (terminal) {
-                try {
-                    const contentHeight = componentElement.offsetHeight;
-                    
-                    if (!shouldAutoScroll && contentHeight > screenHeight) {
-                        shouldAutoScroll = true;
-                    }
-                    
-                    if (shouldAutoScroll) {
-                        const scrollPosition = Math.max(0, contentHeight - screenHeight);
-                        terminal.scrollTo({ top: scrollPosition, behavior: 'instant' });
-                    } else {
-                        terminal.scrollTo({ top: initialScrollTop, behavior: 'instant' });
-                    }
-                } catch (error) {
-                    console.error("Error during auto-scrolling:", error);
+    
+            // Auto-scrolling logic
+            try {
+                const contentBottom = componentElement.offsetTop + componentElement.offsetHeight;
+                const scrollThreshold = terminal.scrollTop + screenHeight * 0.75;
+    
+                if (contentBottom > scrollThreshold) {
+                    const scrollAmount = contentBottom - scrollThreshold;
+                    terminal.scrollBy({ top: scrollAmount, behavior: 'smooth' });
                 }
+            } catch (error) {
+                console.error("Error during auto-scrolling:", error);
             }
-            
+    
             await new Promise(resolve => setTimeout(resolve, typingSpeed));
         }
     }

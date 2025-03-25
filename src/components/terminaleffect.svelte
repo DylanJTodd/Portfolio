@@ -1,8 +1,8 @@
 <script lang="ts">
-    import Scanlines from '$lib/components/scanlines.svelte';
-    import TextFlicker from '$lib/components/textflicker.svelte';
-    import ColorFilter from '$lib/components/colorfilter.svelte';
-    import TextGlow from '$lib/components/textglow.svelte';
+    import Scanlines from '../components/scanlines.svelte';
+    import TextFlicker from '../components/textflicker.svelte';
+    import ColorFilter from '../components/colorfilter.svelte';
+    import TextGlow from '../components/textglow.svelte';
 
     // Properties for ColorFilter
     export let opacity: number = 0.4;

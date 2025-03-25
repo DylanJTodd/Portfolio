@@ -1,6 +1,6 @@
 <!-- CursorSVG.svelte -->
 <script>
-    import { terminalColor } from '$lib/stores.ts';
+    import { terminalColor } from '../stores/globalStore';
     import { onMount } from 'svelte';
     
     $: darkerColor = $terminalColor.replace('#', '').match(/.{2}/g)

@@ -1,4 +1,10 @@
 <!-- src/lib/components/textglow.svelte -->
+<script lang="ts">
+    export let glowColor: string = '#ffffff';
+    export let glowSpread: string = '8px';
+    export let glowOpacity: number = 0.1;
+</script>
+
 <div class="text-glow">
     <slot></slot>
 </div>
