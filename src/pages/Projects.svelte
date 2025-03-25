@@ -21,7 +21,7 @@
     }
 </script>
 
-{#if showContent}
+{#if showContent} <!-- TODO: add way back to navigation -->
 <section class="terminal-opening" bind:this={terminalSection} in:fly="{{ y: 0, duration: 1000 }}" out:fly="{{ y: -1000, duration: 1000 }}">
     <TextScroll startDelay={1000} audioPlay={$audioEnabled} typingSpeed={50} text="Please choose any project name that interests you, and learn what it's about!" on:animationComplete={() => { 
         if (choiceList) {

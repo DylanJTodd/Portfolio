@@ -28,18 +28,18 @@
     <img src="../../res/squid.jpg" alt="SQL Squid Games Home Page" style="float: right; margin-left: 1rem; width: 50vw;"/><br>
 
     {#if currentStep === 1} <!-- General Info -->
-        <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={40} text="SQL Squid Games was a website I developed when I worked at DataLemur "/><br>
-        <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={40} text="Although I cannot publicly provide the code, I am more than happy to explain what I did below."/><br>
-        <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={40} text="The very first thing I did was user research. This meant scouring forums, reddit, social media, and watching both seasons over a weekend (crazy, right?)"/><br>
-        <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={40} text="Then, the next thing I did was competitor research. I played every web-based SQL game that exists, compiled a list of the best and worst parts, some desirable features, and created a presentation and ran it by the CEO."/><br>
-        <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={40} text="Then came the design. I made a few different Figma prototypes, got one approved, and got a general idea of what the site should look like and how it should operate. This was my starting point."/><br>
+        <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={40} text="SQL Squid Games was a website I developed when I worked at DataLemur "/>
+        <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={40} text="Although I cannot publicly provide the code, I am more than happy to explain what I did below."/>
+        <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={40} text="The very first thing I did was user research. This meant scouring forums, reddit, social media, and watching both seasons over a weekend (crazy, right?)"/>
+        <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={40} text="Then, the next thing I did was competitor research. I played every web-based SQL game that exists, compiled a list of the best and worst parts, some desirable features, and created a presentation and ran it by the CEO."/>
+        <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={40} text="Then came the design. I made a few different Figma prototypes, got one approved, and got a general idea of what the site should look like and how it should operate. This was my starting point."/>
 
         <TextScroll startDelay={1000} audioPlay={$audioEnabled} typingSpeed={50} text="" on:animationComplete={() => { 
             if (choiceList) {
                 choiceList.style.visibility = 'visible';
             }
         }}/>
-        <TextScroll hideCaretManually={true} startDelay={500} audioPlay={false} /><br>
+        <TextScroll hideCaretManually={true} startDelay={500} audioPlay={false} />
 
         <p class="choice-list" bind:this={choiceList} style="visibility: hidden;">
             <ChoiceSelector 

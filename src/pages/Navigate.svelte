@@ -22,13 +22,13 @@
 </script>
 {#if showContent}
 <section class="terminal-opening" bind:this={terminalSection} in:fly="{{ y: 0, duration: 1000 }}" out:fly="{{ y: -1000, duration: 1000 }}">
-    <TextScroll audioPlay={$audioEnabled} typingSpeed={50} text="Welcome to my portfolio website!"/><br><br>
+    <TextScroll audioPlay={$audioEnabled} typingSpeed={50} text="Welcome to my portfolio website!"/><br>
     <TextScroll startDelay={1000} audioPlay={$audioEnabled} typingSpeed={50} text="This is a main directory listing. Feel free to navigate to any of the below pages." on:animationComplete={() => { 
         if (choiceList) {
             choiceList.style.visibility = 'visible';
         }
     }}/>
-    <TextScroll hideCaretManually={true} startDelay={500} audioPlay={false} /><br>
+    <TextScroll hideCaretManually={true} startDelay={500} audioPlay={false} />
 
     <p class="choice-list" bind:this={choiceList} style="visibility: hidden;">
         <ChoiceSelector 
