@@ -1,5 +1,6 @@
 test-results
 node_modules
+deploy.ps1
 
 # Output
 .output
@@ -9,6 +10,8 @@ node_modules
 /.svelte-kit
 /build
 /dist
+/dist/index.html
+
 
 # OS
 .DS_Store
