@@ -28,4 +28,4 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
 #Backend 
-backend/db.php
+backend
