@@ -7,6 +7,7 @@
 
     let username = '';
     let password = '';
+    let confirmPassword = '';
     let errorMessage = '';
     let choiceList: HTMLParagraphElement;
     let showContent = true;
@@ -73,6 +74,10 @@
             errorMessage = 'Password must be between 8 and 64 characters';
             return;
         }
+        if (password !== confirmPassword) {
+            errorMessage = 'Passwords do not match';
+            return;
+        }
         try {
             const hashedPassword = await hashPassword(password, username);
             const response = await fetch('/backend/api.php/users', {
@@ -82,32 +87,34 @@
                 },
                 body: JSON.stringify({ 
                     username, 
-                    password_hash: hashedPassword,
-                    action: 'create'
+                    password: password // Send raw password for hashing in the backend
                 })
             });
 
             const data = await response.json();
 
-            if (data.success) {
+            if (data.status === 'success') {
                 sessionStorage.setItem('userId', data.user_id);
                 sessionStorage.setItem('username', username);
 
-                // Save default settings for the new user
-                const defaultSettings = {
-                    user_id: data.user_id,
-                    terminal_color: $terminalColor,
-                    audio_enabled: $audioEnabled ? 1 : 0
-                };
-                await fetch('/backend/api.php/settings', {
+                // Fetch and save default settings for the new user
+                const settingsResponse = await fetch(`/backend/api.php/settings`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(defaultSettings)
+                    body: JSON.stringify({
+                        user_id: data.user_id,
+                        terminal_color: $terminalColor,
+                        audio_enabled: $audioEnabled ? 1 : 0
+                    })
                 });
 
-                navigateTo('navigation');
+                if (settingsResponse.ok) {
+                    navigateTo('navigation');
+                } else {
+                    errorMessage = 'Failed to save user settings';
+                }
             } else {
                 errorMessage = data.error || 'Account creation failed';
             }
@@ -124,6 +131,16 @@
             showContent = true;
         }, 1000);
     }
+
+    async function handleChoice(index: number) {
+        if (index === 0) {
+            await handleLogin();
+        } else if (index === 1) {
+            clearTerminal();
+        } else if (index === 2) {
+            navigateTo('MainConfig');
+        }
+    }
 </script>
 
 <ColorFilter>
@@ -136,7 +153,7 @@
                 type="text" 
                 id="username" 
                 bind:value={username} 
-                style="background-color: {$terminalColor}; color: white;"
+                style="background-color: #333; color: white; font-size: 1rem; padding: 0.1rem; margin-bottom: 1rem; width: 80%;"
             /><br>
             
             <label for="password">PASSWORD:</label>
@@ -144,14 +161,21 @@
                 type="password" 
                 id="password" 
                 bind:value={password} 
-                style="background-color: {$terminalColor}; color: white;"
+                style="background-color: #333; color: white; font-size: 1rem; padding: 0.1rem; margin-bottom: 1rem; width: 80%;"
+            /><br>
+
+            <label for="confirm-password">CONFIRM PASSWORD:</label>
+            <input 
+                type="password" 
+                id="confirm-password" 
+                bind:value={confirmPassword} 
+                style="background-color: #333; color: white; font-size: 1rem; padding: 0.1rem; margin-bottom: 1rem; width: 80%;"
             /><br>
 
             {#if errorMessage}
-                <p style="color: red;">{errorMessage}</p>
+                <p style="color: red; font-size: 1rem;">{errorMessage}</p>
             {/if}
 
-            <button on:click={handleLogin}>ENTER</button>
             <TextScroll startDelay={500} audioPlay={$audioEnabled} typingSpeed={50} text="Choose an option:" hideCaretManually={true} on:animationComplete={() => {
                 if (choiceList) {
                     choiceList.style.visibility = 'visible';
@@ -160,22 +184,15 @@
 
             <p class="choice-list" bind:this={choiceList} style="visibility: hidden;">
                 <ChoiceSelector 
-                    choices={['Create Account', 'Back to Configuration']} 
+                    choices={['Login', 'Create Account', 'Back to Configuration']} 
                     isActive={choiceList?.style.visibility === 'visible'}
-                    onSelect={(index) => {
-                        if (index === 0) {
-                            clearTerminal();
-                        } else {
-                            navigateTo('MainConfig');
-                        }
-                    }}
+                    onSelect={handleChoice}
                 />
             </p>
 
         {:else if currentStep === 2}
             <TextScroll audioPlay={$audioEnabled} typingSpeed={50} text="Creating Account..."/><br>
-            <button on:click={handleCreateAccount}>CONFIRM</button>
-            <button on:click={() => { currentStep = 1; clearTerminal(); }}>CANCEL</button>
+            <button on:click={handleCreateAccount} style="font-size: 1rem; padding: 0.1rem; margin-right: 1rem;">CREATE ACCOUNT</button>
         {/if}
     </section>
     {/if}
