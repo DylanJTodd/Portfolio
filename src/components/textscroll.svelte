@@ -49,8 +49,8 @@
     function selectAudioFile(speed: number): [string, number] {
         if (speed <= 25) {
             const files = [
-                ['/typing/fast1', 5.9],
-                ['/typing/fast2', 5]
+                ['/res/typing/fast1', 5.9],
+                ['/res/typing/fast2', 5]
             ];
             return files[Math.floor(Math.random() * files.length)] as [string, number];
         } else {

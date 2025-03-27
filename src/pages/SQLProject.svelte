@@ -25,7 +25,7 @@
 
 {#if showContent}
 <section class="terminal-opening" bind:this={terminalSection} in:fly="{{ y: 0, duration: 1000 }}" out:fly="{{ y: -1000, duration: 1000 }}">
-    <img src="../../res/squid.jpg" alt="SQL Squid Games Home Page" style="float: right; margin-left: 1rem; width: 50vw;"/><br>
+    <img src="/res/squid.jpg" alt="SQL Squid Games Home Page" style="float: right; margin-left: 1rem; width: 50vw;"/><br>
 
     {#if currentStep === 1} <!-- General Info -->
         <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={40} text="SQL Squid Games was a website I developed when I worked at DataLemur "/>
