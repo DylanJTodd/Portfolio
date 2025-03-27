@@ -1,10 +1,13 @@
 <script>
   import { currentRoute, navigateTo } from './src/stores/routeStore';
+
   import MainConfig from './src/pages/MainConfig.svelte';
   import Navigation from './src/pages/Navigate.svelte';
   import About from './src/pages/About.svelte';
   import Projects from './src/pages/Projects.svelte';
   import SQLSquidGames from './src/pages/SQLProject.svelte';
+  import Login from './src/pages/Login.svelte';
+
   import TerminalEffect from './src/components/terminaleffect.svelte';
   import CursorSVG from './src/components/cursorsvg.svelte';
   import ColorFilter from './src/components/colorfilter.svelte';
@@ -30,6 +33,8 @@
         <Projects />
       {:else if route === 'projects/sql_squid_games'}
         <SQLSquidGames />
+      {:else if route === 'login'}
+        <Login />
       {/if}
     </main>
   </ColorFilter>

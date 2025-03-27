@@ -61,7 +61,11 @@
                 choices={['Log In', 'Use Guest Mode']}
                 isActive={choiceList?.style.visibility === 'visible'}
                 onSelect={(index) => {
-                    clearTerminal();
+                    if (index === 0) {
+                        navigateTo('login');
+                    } else {
+                        clearTerminal();
+                    }
                 }}
             />
         </p>
