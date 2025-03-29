@@ -2,11 +2,14 @@
     import TextScroll from '../components/textscroll.svelte';
     import { audioEnabled, terminalColor } from '../stores/globalStore';
     import ColorFilter from '../components/colorfilter.svelte';
+    import ChoiceSelector from '../components/choiceselector.svelte';
     import { navigateTo } from '../stores/routeStore';
+    import { get } from 'svelte/store';
 
     let username = '';
     let password = '';
     let errorMessage = '';
+    let choiceList: HTMLParagraphElement;
 
     async function handleLogin() {
         if (!username || !password) {
@@ -14,24 +17,48 @@
             return;
         }
         try {
+            const requestData = { username, password };
+
             const response = await fetch('/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ username, password })
+                body: JSON.stringify(requestData)
             });
 
             const data = await response.json();
 
             if (response.ok) {
+                const userResponse = await fetch(`/api/users?username=${username}`);
+                if (userResponse.ok) {
+                    const userData = await userResponse.json();
+                    const userId = userData.user_id;
+
+                    if (!userId) {
+                        errorMessage = 'Failed to retrieve user ID';
+                        return;
+                    }
+
+                    const settingsResponse = await fetch(`/api/settings/${userId}`);
+                    if (settingsResponse.ok) {
+                        const settings = await settingsResponse.json();
+
+                        if (settings && typeof settings.terminal_color === 'string' && settings.audio_enabled !== undefined) {
+                            terminalColor.set(settings.terminal_color);
+                            audioEnabled.set(!!settings.audio_enabled);
+
+                            document.cookie = `terminal_color=${settings.terminal_color}; path=/`;
+                            document.cookie = `audio_enabled=${settings.audio_enabled}; path=/`;
+                        }
+                    }
+                }
                 navigateTo('navigation');
             } else {
                 errorMessage = data.error || 'Login failed';
             }
         } catch (error) {
             errorMessage = 'An error occurred during login';
-            console.error(error);
         }
     }
 
@@ -56,13 +83,23 @@
             const data = await response.json();
 
             if (response.ok) {
+                await fetch('/api/settings', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        user_id: data.user_id,
+                        terminal_color: get(terminalColor),
+                        audio_enabled: get(audioEnabled)
+                    })
+                });
                 navigateTo('navigation');
             } else {
                 errorMessage = data.error || 'Account creation failed';
             }
         } catch (error) {
             errorMessage = 'An error occurred during account creation';
-            console.error(error);
         }
     }
 </script>
@@ -92,7 +129,20 @@
             <p style="color: red; font-size: 1rem;">{errorMessage}</p>
         {/if}
 
-        <button on:click={handleLogin} style="font-size: 1rem; padding: 0.1rem; margin-right: 1rem;">LOGIN</button>
-        <button on:click={handleCreateAccount} style="font-size: 1rem; padding: 0.1rem;">CREATE ACCOUNT</button>
+        <p class="choice-list" bind:this={choiceList} style="visibility: visible;">
+            <ChoiceSelector 
+                choices={['Log In', 'Create Account', 'Back']} 
+                isActive={true}
+                onSelect={(index) => {
+                    if (index === 0) {
+                        handleLogin();
+                    } else if (index === 1) {
+                        handleCreateAccount();
+                    } else if (index === 2) {
+                        navigateTo('mainConfig');
+                    }
+                }}
+            />
+        </p>
     </section>
 </ColorFilter>
