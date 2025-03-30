@@ -45,6 +45,7 @@ section{
     width: 80%;
     height: 100vh;
     position: absolute;
+    padding:0;
     padding-left: 20vw;
     padding-bottom: 3rem;
     padding-top: 0.25rem;
@@ -56,12 +57,45 @@ section{
     -ms-overflow-style: none;
 }
 
+.mainstuff{
+    width: 80%;
+    height: 100vh;
+    padding:0;
+    padding-left: 20vw;
+    padding-bottom: 3rem;
+    padding-top: 0.25rem;
+    top: 0;
+    left: 0;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+@media screen and (max-width: 768px) {
+    .mainstuff {
+        width: 95%;
+        height: 100vh;
+        padding:0;
+        padding-left: 2vw;
+        padding-bottom: 3rem;
+        padding-top: 0.25rem;
+        top: 0;
+        left: 0;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+}
+
 
 @media screen and (max-width: 768px) {
     .terminal-opening {
         width: 95%;
         height: 100vh;
         position: absolute;
+        padding:0;
         padding-left: 2vw;
         padding-bottom: 3rem;
         padding-top: 0.25rem;
