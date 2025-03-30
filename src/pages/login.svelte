@@ -1,6 +1,6 @@
 <script lang="ts">
     import TextScroll from '../components/textscroll.svelte';
-    import { audioEnabled, terminalColor } from '../stores/globalStore';
+    import { audioEnabled, terminalColor, isLoggedIn, userID } from '../stores/globalStore';
     import ColorFilter from '../components/colorfilter.svelte';
     import ChoiceSelector from '../components/choiceselector.svelte';
     import { navigateTo } from '../stores/routeStore';
@@ -53,6 +53,8 @@
                         }
                     }
                 }
+                isLoggedIn.set(true);
+                userID.set(data.user_id);
                 navigateTo('navigation');
             } else {
                 errorMessage = data.error || 'Login failed';
