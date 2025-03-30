@@ -10,6 +10,7 @@
     let password = '';
     let errorMessage = '';
     let choiceList: HTMLParagraphElement;
+    let isChoiceActive = true;
 
     async function handleLogin() {
         if (!username || !password) {
@@ -58,9 +59,11 @@
                 navigateTo('navigation');
             } else {
                 errorMessage = data.error || 'Login failed';
+                isChoiceActive = true;
             }
         } catch (error) {
             errorMessage = 'An error occurred during login';
+            isChoiceActive = true;
         }
     }
 
@@ -134,9 +137,10 @@
         <p class="choice-list" bind:this={choiceList} style="visibility: visible;">
             <ChoiceSelector 
                 choices={['Log In', 'Create Account', 'Back']} 
-                isActive={true}
+                bind:isActive={isChoiceActive} 
                 onSelect={(index) => {
                     if (index === 0) {
+                        isChoiceActive = false;
                         handleLogin();
                     } else if (index === 1) {
                         handleCreateAccount();
