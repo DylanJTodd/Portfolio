@@ -5,7 +5,8 @@
     import { navigateTo } from '../stores/routeStore';
     import { onMount } from 'svelte';
 
-    let notes: { id: number; created_at: string; content?: string }[] = []; // Add optional content field
+    let notes: { note_id: number; id?: number; created_at: string; content?: string }[] = [];
+    let indexToNoteId: { [key: number]: number } = {};
     let currentStep = 1;
     let selectedNoteId: number | null = null;
     let selectedNoteIds: Set<number> = new Set();
@@ -13,6 +14,8 @@
     let typedCharacterCount = 0;
     let intervalId: any;
     let isTyping = false;
+    let isChoiceActive = true;
+    let selectedIndexes = new Set<number>();
 
     async function fetchNotes() {
         if (!$userID || $userID === '') {
@@ -26,6 +29,10 @@
                 notes = fetchedNotes.sort((a: { created_at: string }, b: { created_at: string }) =>
                     new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
                 );
+                indexToNoteId = {};
+                notes.forEach((note, i) => {
+                    indexToNoteId[i + 2] = note.note_id;
+                });
             } else {
                 console.error('Failed to fetch notes:', await response.json());
             }
@@ -39,7 +46,7 @@
             const response = await fetch(`/api/notes/${noteId}`);
             if (response.ok) {
                 const note = await response.json();
-                noteContent = note.content; // Update noteContent for the textarea
+                noteContent = note.content;
             } else {
                 console.error('Failed to fetch note content:', await response.json());
             }
@@ -76,16 +83,8 @@
         const response = await fetch(`/api/notes/${noteId}`, { method: 'DELETE' });
         if (!response.ok) {
             console.error('Failed to delete note:', await response.json());
+        } else {
         }
-    }
-
-    async function deleteSelectedNotes() {
-        for (const id of selectedNoteIds) {
-            await deleteNote(id);
-        }
-        selectedNoteIds.clear();
-        await fetchNotes();
-        currentStep = 1;
     }
 
     async function saveNote() {
@@ -116,13 +115,32 @@
         clearInterval(intervalId);
     }
 
-    function toggleNoteSelection(index: number) {
-        const noteId = notes[index - 2].id; // Adjust index for "Cancel" and "Delete Selected Notes"
-        if (selectedNoteIds.has(noteId)) {
-            selectedNoteIds.delete(noteId);
-        } else {
-            selectedNoteIds.add(noteId);
+    async function handleDeleteSelectedNotes() {
+        
+        const filteredIndexes = Array.from(selectedIndexes).filter(index => index >= 2);
+        
+        const notesToDelete = filteredIndexes
+            .map(index => {
+                return indexToNoteId[index];
+            })
+            .filter(id => id !== undefined);
+            
+        for (const id of notesToDelete) {
+            await deleteNote(id);
         }
+
+        selectedNoteIds.clear();
+        selectedIndexes.clear();
+        await fetchNotes();
+        currentStep = 1;
+        isChoiceActive = true;
+    }
+
+    function handleCancel() {
+        currentStep = 1;
+        selectedNoteIds.clear();
+        selectedIndexes.clear();
+        isChoiceActive = true;
     }
 
     onMount(() => {
@@ -134,23 +152,32 @@
     });
 
     $: if (currentStep === 1) {
-        fetchNotes(); // Re-fetch notes whenever we enter step 1
+        fetchNotes();
+    }
+
+    $: if (currentStep === 3) {
+        isChoiceActive = true;
+        fetchNotes();
     }
 </script>
 
 {#if !$userID || $userID === ''}
     <TextScroll audioPlay={$audioEnabled} typingSpeed={50} text="You are not logged in" />
+    {navigateTo('navigate')}
 {:else if currentStep === 1}
-    <TextScroll audioPlay={$audioEnabled} typingSpeed={50} text="What would you like to do?" />
     <ChoiceSelector
         choices={['Create a Note', 'Delete a Note', 'Back', ...notes.map(note => note.created_at)]}
         isActive={!isTyping}
         onSelect={async (index) => {
-            if (index === 0) createNote();
-            else if (index === 1) currentStep = 3;
-            else if (index === 2) navigateTo('navigation');
-            else {
-                selectedNoteId = notes[index - 3].id;
+            if (index === 0) {
+                await createNote();
+            } else if (index === 1) {
+                await fetchNotes();
+                currentStep = 3;
+            } else if (index === 2) {
+                navigateTo('navigation');
+            } else {
+                selectedNoteId = notes[index - 3].note_id;
                 await fetchNoteContent(selectedNoteId);
                 currentStep = 2;
             }
@@ -165,29 +192,33 @@
         style="width: 100%; height: 300px; background-color: #333; color: white; font-size: 1rem; padding: 0.5rem;"
     ></textarea>
     <ChoiceSelector
-        choices={['Create Note', 'Back']}
+        choices={['Save Note', 'Back']}
         isActive={!isTyping}
         onSelect={async (index) => {
             if (index === 0) {
                 await saveNote();
+                await fetchNotes();
                 currentStep = 1;
             } else if (index === 1) {
-                if (selectedNoteId !== null) {
-                    await deleteNote(selectedNoteId);
-                }
+                await saveNote();
+                await fetchNotes();
                 currentStep = 1;
             }
         }}
     />
 {:else if currentStep === 3}
-    <TextScroll audioPlay={$audioEnabled} typingSpeed={50} text="Select notes to delete or cancel." />
     <ChoiceSelector
         choices={['Cancel', 'Delete Selected Notes', ...notes.map(note => note.created_at)]}
-        isActive={!isTyping}
-        onSelect={(index) => {
-            if (index === 0) currentStep = 1;
-            else if (index === 1) deleteSelectedNotes();
-            else toggleNoteSelection(index);
+        bind:isActive={isChoiceActive}
+        multiple={true}
+        bind:selectedIndexes={selectedIndexes}
+        actionIndexes={[0, 1]}
+        onSelect={async (index) => {
+            if (index === 0) {
+                handleCancel();
+            } else if (index === 1) {
+                await handleDeleteSelectedNotes();
+            }
         }}
     />
 {/if}
