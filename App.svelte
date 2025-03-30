@@ -7,6 +7,7 @@
   import Projects from './src/pages/Projects.svelte';
   import SQLSquidGames from './src/pages/SQLProject.svelte';
   import Login from './src/pages/Login.svelte';
+  import Notes from './src/pages/Notes.svelte';
 
   import TerminalEffect from './src/components/terminaleffect.svelte';
   import CursorSVG from './src/components/cursorsvg.svelte';
@@ -22,7 +23,7 @@
 <CursorSVG />
 <TerminalEffect>
   <ColorFilter>
-    <main>
+    <main class="mainstuff">
       {#if route === 'mainConfig'}
         <MainConfig />
       {:else if route === 'navigation'}
@@ -35,6 +36,8 @@
         <SQLSquidGames />
       {:else if route === 'login'}
         <Login />
+        {:else if route === 'notes'}
+        <Notes />
       {/if}
     </main>
   </ColorFilter>

@@ -2,7 +2,7 @@
     import TextScroll from '../components/textscroll.svelte';
     import ChoiceSelector from '../components/choiceselector.svelte';
 
-    import { audioEnabled } from '../stores/globalStore';
+    import { audioEnabled, isLoggedIn } from '../stores/globalStore';
     import { fly } from 'svelte/transition';
     import { navigateTo } from '../stores/routeStore';
 
@@ -19,6 +19,9 @@
             showContent = true;
         }, 1000);
     }
+
+    const choices = ['Projects', 'About', $isLoggedIn ? 'Notes' : 'Must be logged in to view'];
+    const disabledChoices = !$isLoggedIn ? [2] : []; // Disable "Notes" if not logged in
 </script>
 {#if showContent}
 <section class="terminal-opening" bind:this={terminalSection} in:fly="{{ y: 0, duration: 1000 }}" out:fly="{{ y: -1000, duration: 1000 }}">
@@ -32,15 +35,15 @@
 
     <p class="choice-list" bind:this={choiceList} style="visibility: hidden;">
         <ChoiceSelector 
-            choices={['Projects', 'About']}
+            choices={choices}
+            disabledChoices={disabledChoices}
             isActive={choiceList?.style.visibility === 'visible'}
             onSelect={(index) => {
-                clearTerminal();
                 if (index === 0) navigateTo('projects');
                 if (index === 1) navigateTo('about');
+                if (index === 2) navigateTo('notes');
             }}
         />
     </p>
-
 </section>
 {/if}
