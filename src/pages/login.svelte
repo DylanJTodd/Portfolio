@@ -12,7 +12,7 @@
     let errorMessage = '';
     let choiceList: HTMLParagraphElement;
     let isChoiceActive = true;
-    let choiceSelectorRef: { reactivate: () => void }; // Reference to ChoiceSelector
+    let choiceSelectorRef: { reactivate: () => void };
     
     let showContent = true;
     let terminalSection: HTMLElement;
@@ -30,7 +30,7 @@
     async function handleLogin() {
         if (!username || !password) {
             errorMessage = 'Username and password are required';
-            choiceSelectorRef.reactivate(); // Reactivate ChoiceSelector
+            choiceSelectorRef.reactivate();
             return;
         }
         isChoiceActive = false;
@@ -55,7 +55,7 @@
 
                     if (!userId) {
                         errorMessage = 'Failed to retrieve user ID';
-                        choiceSelectorRef.reactivate(); // Reactivate ChoiceSelector
+                        choiceSelectorRef.reactivate();
                         isChoiceActive = true;
                         return;
                     }
@@ -77,15 +77,13 @@
                 userID.set(data.user_id);
                 navigateTo('navigation');
             } else {
-                // Handle server errors (e.g., 401 Unauthorized)
                 errorMessage = data.error || 'Login failed';
-                choiceSelectorRef.reactivate(); // Reactivate ChoiceSelector
+                choiceSelectorRef.reactivate();
                 isChoiceActive = true;
             }
         } catch (error) {
-            // Handle unexpected errors
             errorMessage = 'An error occurred during login';
-            choiceSelectorRef.reactivate(); // Reactivate ChoiceSelector
+            choiceSelectorRef.reactivate();
             isChoiceActive = true;
         }
     }
@@ -166,7 +164,7 @@
                     if (index === 0) {
                         if (!username || !password) {
                             errorMessage = 'Username and password are required';
-                            choiceSelectorRef.reactivate(); // Reactivate ChoiceSelector
+                            choiceSelectorRef.reactivate();
                             return;
                         }
                         isChoiceActive = false;

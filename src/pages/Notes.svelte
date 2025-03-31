@@ -82,8 +82,8 @@
             const newNote = await response.json();
             selectedNoteId = newNote.note_id;
             noteContent = '';
-            await fetchNotes(); // Refresh the notes list
-            currentStep = 2; // Transition to the note editing step
+            await fetchNotes();
+            currentStep = 2;
         } else {
             console.error('Failed to create note:', await response.json());
         }

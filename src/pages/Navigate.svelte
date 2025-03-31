@@ -21,7 +21,7 @@
     }
 
     const choices = ['Projects', 'About', $isLoggedIn ? 'Notes' : 'Must be logged in to view', $isLoggedIn ? 'Settings' : 'Must be logged in to view'];
-    const disabledChoices = !$isLoggedIn ? [2] : []; // Disable "Notes" if not logged in
+    const disabledChoices = !$isLoggedIn ? [2,3] : [];
 </script>
 {#if showContent}
 <section class="terminal-opening" bind:this={terminalSection} in:fly="{{ y: 0, duration: 1000 }}" out:fly="{{ y: -1000, duration: 1000 }}">

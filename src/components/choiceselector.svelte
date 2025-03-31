@@ -9,14 +9,13 @@
     export let multiple: boolean = false;
     export let selectedIndexes: Set<number> = new Set();
     export let actionIndexes: number[] = [];
-    export let settingsMode: boolean = false; // New property to enable settings mode
+    export let settingsMode: boolean = false;
     export let exitIndex: number | null = null;
 
     let currentIndex = 0;
     let keydownListener: ((event: KeyboardEvent) => void) | null = null;
 
-    // Reactive statement to sync internal state with parent-provided isActive
-    $: if (!isActive) currentIndex = 0; // Reset currentIndex when deactivated
+    $: if (!isActive) currentIndex = 0;
 
     function handleKeydown(event: KeyboardEvent) {
         if (!isActive || isTyping) return;
@@ -34,12 +33,12 @@
                 if (!disabledChoices.includes(currentIndex)) {
                     if (multiple) {
                         if (actionIndexes.includes(currentIndex)) {
-                            onSelect(currentIndex); // Trigger action for action indexes
+                            onSelect(currentIndex);
                         } else {
-                            toggleSelection(currentIndex); // Toggle selection for regular indexes
+                            toggleSelection(currentIndex);
                         }
                     } else {
-                        onSelect(currentIndex); // Let the parent decide whether to deactivate
+                        onSelect(currentIndex);
                     }
                 }
                 break;
@@ -50,12 +49,12 @@
         if (!isActive || disabledChoices.includes(index)) return;
         if (multiple) {
             if (actionIndexes.includes(index)) {
-                onSelect(index); // Trigger action for action indexes
+                onSelect(index);
             } else {
-                toggleSelection(index); // Toggle selection for regular indexes
+                toggleSelection(index);
             }
         } else {
-            onSelect(index); // Let the parent decide whether to deactivate
+            onSelect(index);
         }
     }
 
@@ -73,7 +72,6 @@
         currentIndex = index;
     }
 
-    // Method to allow reactivation from the parent
     export function reactivate() {
         isActive = true;
     }
