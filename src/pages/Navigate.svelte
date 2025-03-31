@@ -20,7 +20,7 @@
         }, 1000);
     }
 
-    const choices = ['Projects', 'About', $isLoggedIn ? 'Notes' : 'Must be logged in to view'];
+    const choices = ['Projects', 'About', $isLoggedIn ? 'Notes' : 'Must be logged in to view', $isLoggedIn ? 'Settings' : 'Must be logged in to view'];
     const disabledChoices = !$isLoggedIn ? [2] : []; // Disable "Notes" if not logged in
 </script>
 {#if showContent}
@@ -39,9 +39,11 @@
             disabledChoices={disabledChoices}
             isActive={choiceList?.style.visibility === 'visible'}
             onSelect={(index) => {
+                clearTerminal();
                 if (index === 0) navigateTo('projects');
                 if (index === 1) navigateTo('about');
                 if (index === 2) navigateTo('notes');
+                if (index === 3) navigateTo('settings');
             }}
         />
     </p>
