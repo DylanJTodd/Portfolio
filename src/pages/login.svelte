@@ -5,18 +5,35 @@
     import ChoiceSelector from '../components/choiceselector.svelte';
     import { navigateTo } from '../stores/routeStore';
     import { get } from 'svelte/store';
+    import { fly } from 'svelte/transition';
 
     let username = '';
     let password = '';
     let errorMessage = '';
     let choiceList: HTMLParagraphElement;
     let isChoiceActive = true;
+    let choiceSelectorRef: { reactivate: () => void }; // Reference to ChoiceSelector
+    
+    let showContent = true;
+    let terminalSection: HTMLElement;
+
+    function clearTerminal() {
+        showContent = false;
+        setTimeout(() => {
+            if (terminalSection) {
+                terminalSection.innerHTML = '';
+            }
+            showContent = true;
+        }, 1000);
+    }
 
     async function handleLogin() {
         if (!username || !password) {
             errorMessage = 'Username and password are required';
+            choiceSelectorRef.reactivate(); // Reactivate ChoiceSelector
             return;
         }
+        isChoiceActive = false;
         try {
             const requestData = { username, password };
 
@@ -38,6 +55,8 @@
 
                     if (!userId) {
                         errorMessage = 'Failed to retrieve user ID';
+                        choiceSelectorRef.reactivate(); // Reactivate ChoiceSelector
+                        isChoiceActive = true;
                         return;
                     }
 
@@ -58,11 +77,15 @@
                 userID.set(data.user_id);
                 navigateTo('navigation');
             } else {
+                // Handle server errors (e.g., 401 Unauthorized)
                 errorMessage = data.error || 'Login failed';
+                choiceSelectorRef.reactivate(); // Reactivate ChoiceSelector
                 isChoiceActive = true;
             }
         } catch (error) {
+            // Handle unexpected errors
             errorMessage = 'An error occurred during login';
+            choiceSelectorRef.reactivate(); // Reactivate ChoiceSelector
             isChoiceActive = true;
         }
     }
@@ -110,7 +133,7 @@
 </script>
 
 <ColorFilter>
-    <section class="terminal-login">
+    <section class="terminal-login" bind:this={terminalSection} in:fly="{{ y: 0, duration: 1000 }}" out:fly="{{ y: -1000, duration: 1000 }}">
         <p style="color: yellow; font-size: 0.9rem; margin-bottom: 1rem;">
             Please don't share private information anywhere on this website, including a real username or password. This is meant for fun not as a secure storage.
         </p>
@@ -131,20 +154,27 @@
         /><br>
 
         {#if errorMessage}
-            <p style="color: red; font-size: 1rem;">{errorMessage}</p>
+            <p style="color: #c8c8c8; font-size: 1rem;">{errorMessage}</p>
         {/if}
 
         <p class="choice-list" bind:this={choiceList} style="visibility: visible;">
             <ChoiceSelector 
+                bind:this={choiceSelectorRef}
                 choices={['Log In', 'Create Account', 'Back']} 
                 bind:isActive={isChoiceActive} 
                 onSelect={(index) => {
                     if (index === 0) {
+                        if (!username || !password) {
+                            errorMessage = 'Username and password are required';
+                            choiceSelectorRef.reactivate(); // Reactivate ChoiceSelector
+                            return;
+                        }
                         isChoiceActive = false;
                         handleLogin();
                     } else if (index === 1) {
                         handleCreateAccount();
                     } else if (index === 2) {
+                        clearTerminal();
                         navigateTo('mainConfig');
                     }
                 }}
