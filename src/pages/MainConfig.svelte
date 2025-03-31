@@ -62,6 +62,7 @@
                 isActive={choiceList?.style.visibility === 'visible'}
                 onSelect={(index) => {
                     if (index === 0) {
+                        clearTerminal();
                         navigateTo('login');
                     } else {
                         clearTerminal();
