@@ -70,7 +70,7 @@
     }
     
     function handleKeydown(event: KeyboardEvent) {
-        if (event.key === 'Enter' && isTyping && $activeInstance === instanceId) {
+        if (event.code === 'Space' && isTyping && $activeInstance === instanceId) {
             event.preventDefault();
             event.stopPropagation();
             
