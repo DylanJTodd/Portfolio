@@ -42,7 +42,7 @@ section{
 }
 
 .terminal-opening {
-    width: 80%;
+    width: 75%;
     height: 100vh;
     position: absolute;
     padding:0;
@@ -58,7 +58,7 @@ section{
 }
 
 .mainstuff{
-    width: 80%;
+    width: 75%;
     height: 100vh;
     padding:0;
     padding-left: 20vw;
@@ -74,7 +74,7 @@ section{
 
 @media screen and (max-width: 768px) {
     .mainstuff {
-        width: 95%;
+        width: 90%;
         height: 100vh;
         padding:0;
         padding-left: 2vw;
@@ -92,7 +92,7 @@ section{
 
 @media screen and (max-width: 768px) {
     .terminal-opening {
-        width: 95%;
+        width: 90%;
         height: 100vh;
         position: absolute;
         padding:0;
