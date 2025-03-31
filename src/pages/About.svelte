@@ -51,7 +51,7 @@
                 onSelect={(index) => {
                     if (index === 0) clearTerminal(2);
                     if (index === 1) window.open('https://github.com/DylanJTodd/Portfolio', '_blank');
-                    if (index === 2) clearTerminal(currentStep); navigateTo('navigation');
+                    if (index === 2) {clearTerminal(currentStep); navigateTo('navigation');}
                 }}
             />
         </p>
@@ -76,7 +76,7 @@
                     if (index === 0) window.open('https://github.com/DylanJTodd/Portfolio', '_blank');
                     if (index === 1) window.open('https://www.linkedin.com/in/dylan-j-todd/', '_blank');
                     if (index === 2) clearTerminal(1);
-                    if (index === 3) clearTerminal(currentStep); navigateTo('navigation');
+                    if (index === 3) {clearTerminal(currentStep); navigateTo('navigation');}
                 }}
             />
         </p>
