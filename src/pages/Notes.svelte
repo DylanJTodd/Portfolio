@@ -4,6 +4,7 @@
     import { audioEnabled, userID } from '../stores/globalStore';
     import { navigateTo } from '../stores/routeStore';
     import { onMount } from 'svelte';
+    import { fly } from 'svelte/transition';
 
     let notes: { note_id: number; id?: number; created_at: string; content?: string }[] = [];
     let indexToNoteId: { [key: number]: number } = {};
@@ -16,6 +17,18 @@
     let isTyping = false;
     let isChoiceActive = true;
     let selectedIndexes = new Set<number>();
+    let terminalSection: HTMLElement;
+    let showContent = true;
+
+    function clearTerminal() {
+        showContent = false;
+        setTimeout(() => {
+            if (terminalSection) {
+                terminalSection.innerHTML = '';
+            }
+            showContent = true;
+        }, 1000);
+    }
 
     async function fetchNotes() {
         if (!$userID || $userID === '') {
@@ -69,7 +82,8 @@
             const newNote = await response.json();
             selectedNoteId = newNote.note_id;
             noteContent = '';
-            currentStep = 2;
+            await fetchNotes(); // Refresh the notes list
+            currentStep = 2; // Transition to the note editing step
         } else {
             console.error('Failed to create note:', await response.json());
         }
@@ -161,70 +175,78 @@
     }
 </script>
 
-{#if !$userID || $userID === ''}
-    <TextScroll audioPlay={$audioEnabled} typingSpeed={50} text="You are not logged in" />
-    {navigateTo('navigate')}
-{:else if currentStep === 1}
-    <ChoiceSelector
-        choices={['Create a Note', 'Delete a Note', 'Back', ...notes.map(note => note.created_at)]}
-        isActive={!isTyping}
-        onSelect={async (index) => {
-            if (index === 0) {
-                await createNote();
-            } else if (index === 1) {
-                await fetchNotes();
-                currentStep = 3;
-            } else if (index === 2) {
-                navigateTo('navigation');
-            } else {
-                selectedNoteId = notes[index - 3].note_id;
-                await fetchNoteContent(selectedNoteId);
-                currentStep = 2;
-            }
-        }}
-    />
-{:else if currentStep === 2}
-    <textarea
-        bind:value={noteContent}
-        on:input={handleTyping}
-        on:focus={() => { isTyping = true; startAutoSave(); }}
-        on:blur={() => { isTyping = false; stopAutoSave(); }}
-        style="width: 100%; height: 300px; background-color: #333; color: white; font-size: 1rem; padding: 0.5rem;"
-    ></textarea>
-    <ChoiceSelector
-        choices={['Save Note', 'Back']}
-        isActive={!isTyping}
-        onSelect={async (index) => {
-            if (index === 0) {
-                await saveNote();
-                await fetchNotes();
-                currentStep = 1;
-            } else if (index === 1) {
-                await saveNote();
-                await fetchNotes();
-                currentStep = 1;
-            }
-        }}
-    />
-{:else if currentStep === 3}
-    <ChoiceSelector
-        choices={['Cancel', 'Delete Selected Notes', ...notes.map(note => note.created_at)]}
-        bind:isActive={isChoiceActive}
-        multiple={true}
-        bind:selectedIndexes={selectedIndexes}
-        actionIndexes={[0, 1]}
-        onSelect={async (index) => {
-            if (index === 0) {
-                handleCancel();
-            } else if (index === 1) {
-                await handleDeleteSelectedNotes();
-            }
-        }}
-    />
+{#if showContent}
+<section class="terminal-notes" bind:this={terminalSection} in:fly="{{ y: 0, duration: 1000 }}" out:fly="{{ y: -1000, duration: 1000 }}">
+    {#if !$userID || $userID === ''}
+        <TextScroll audioPlay={$audioEnabled} typingSpeed={50} text="You are not logged in" />
+        {clearTerminal()}
+        {navigateTo('navigate')}
+    {:else if currentStep === 1}
+        <ChoiceSelector
+            choices={['Create a Note', 'Delete a Note', 'Back', ...notes.map(note => note.created_at)]}
+            isActive={!isTyping}
+            onSelect={async (index) => {
+                if (index === 0) {
+                    await createNote();
+                } else if (index === 1) {
+                    await fetchNotes();
+                    currentStep = 3;
+                } else if (index === 2) {
+                    clearTerminal();
+                    navigateTo('navigation');
+                } else {
+                    selectedNoteId = notes[index - 3].note_id;
+                    await fetchNoteContent(selectedNoteId);
+                    currentStep = 2;
+                }
+            }}
+        />
+    {:else if currentStep === 2}
+        <textarea
+            bind:value={noteContent}
+            on:input={handleTyping}
+            on:focus={() => { isTyping = true; startAutoSave(); }}
+            on:blur={() => { isTyping = false; stopAutoSave(); }}
+            style="width: 100%; height: 300px; background-color: #333; color: white; font-size: 1rem; padding: 0.5rem;"
+        ></textarea>
+        <ChoiceSelector
+            choices={['Save Note', 'Back']}
+            isActive={!isTyping}
+            onSelect={async (index) => {
+                if (index === 0) {
+                    await saveNote();
+                    await fetchNotes();
+                    currentStep = 1;
+                } else if (index === 1) {
+                    await saveNote();
+                    await fetchNotes();
+                    currentStep = 1;
+                }
+            }}
+        />
+    {:else if currentStep === 3}
+        <ChoiceSelector
+            choices={['Cancel', 'Delete Selected Notes', ...notes.map(note => note.created_at)]}
+            bind:isActive={isChoiceActive}
+            multiple={true}
+            bind:selectedIndexes={selectedIndexes}
+            actionIndexes={[0, 1]}
+            onSelect={async (index) => {
+                if (index === 0) {
+                    handleCancel();
+                } else if (index === 1) {
+                    await handleDeleteSelectedNotes();
+                }
+            }}
+        />
+    {/if}
+</section>
 {/if}
 
 <style>
     textarea {
+        width: 80%;
+        height: 75%;
         resize: none;
         border: 1px solid #555;
     }
