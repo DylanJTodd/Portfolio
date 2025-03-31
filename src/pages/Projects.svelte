@@ -9,6 +9,7 @@
     let terminalSection: HTMLElement;
     let choiceList: HTMLParagraphElement;
     let showContent = true;
+    
 
     function clearTerminal() {
         showContent = false;
@@ -32,13 +33,13 @@
 
     <p class="choice-list" bind:this={choiceList} style="visibility: hidden;">
         <ChoiceSelector 
-            choices={['Back','This Portfolio Site', 'Educational Web-based SQL Game']}
+            choices={['This Portfolio Site (About me)','Educational Web-based SQL Game', 'Back']}
             isActive={choiceList?.style.visibility === 'visible'}
             onSelect={(index) => {
                 clearTerminal();
-                if (index === 1) navigateTo('navigation');
-                if (index === 1) navigateTo('about');
-                if (index === 2) navigateTo('projects/sql_squid_games');
+                if (index === 0) navigateTo('about');
+                if (index === 1) navigateTo('projects/sql_squid_games');
+                if (index === 2) navigateTo('navigation');
             }}
         />
     </p>
