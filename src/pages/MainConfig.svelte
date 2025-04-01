@@ -80,9 +80,6 @@
     function handleSelection(step: number, choiceIndex: number) {
         if (transitionInProgress || !inputEnabled || step !== currentStep) return;
         inputEnabled = false;
-        
-        console.log("index: " + choiceIndex);
-        console.log("step: " + currentStep);
 
         switch(step) {
             case 1:
