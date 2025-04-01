@@ -88,7 +88,7 @@
                 break;
             case 2:
                 if (choiceIndex === 0) requestTransition(3);
-                else if (choiceIndex === 1) requestTransition(6);
+                else if (choiceIndex === 1) requestTransition(5);
                 break;
             case 3:
                 $audioEnabled = (choiceIndex === 0);
@@ -105,8 +105,8 @@
         if (event.key === 'Enter') {
             if (currentStep === 5) {
                 inputEnabled = false;
-                requestTransition(6);
-            } else if (currentStep === 6) {
+                requestTransition(5);
+            } else if (currentStep === 5) {
                 inputEnabled = false;
                 updateCookies();
                 requestTransition(-2);
@@ -125,12 +125,6 @@
                 }
             }, 100);
         } else if (step === 5) {
-            setTimeout(() => {
-                if (!transitionInProgress && currentStep === step) {
-                    inputEnabled = true;
-                }
-            }, 100);
-        } else if (step === 6) {
             inputEnabled = false;
             setTimeout(() => {
                 updateCookies();
@@ -211,9 +205,8 @@
 
     {:else if currentStep === 4}    
         <TextScroll startDelay={400} audioPlay={$audioEnabled} typingSpeed={75} text="..." />
-        <TextScroll startDelay={1000} audioPlay={$audioEnabled} typingSpeed={75} text="..." />
         <TextScroll startDelay={500} audioPlay={$audioEnabled} typingSpeed={75} text={$audioEnabled ? "Audio Enabled" : "Audio Disabled"} />
-        <TextScroll audioPlay={$audioEnabled} typingSpeed={50} text="Terminal Color Configuration" hideCaretManually={true} /><br>
+        <TextScroll audioPlay={$audioEnabled} typingSpeed={50} text="Terminal Color Configuration" hideCaretManually={true} />
         <TextScroll startDelay={500} audioPlay={$audioEnabled} typingSpeed={75} text="Enter a color:" />
         <TextScroll hideCaretManually={true} startDelay={1} audioPlay={false} on:animationComplete={() => handleAnimationComplete(4)} /><br>
 
@@ -236,15 +229,10 @@
             {/key}
         {/if}
 
-    {:else if currentStep === 5}
-        <TextScroll audioPlay={$audioEnabled} typingSpeed={75} text="Colors configured." />
-        <TextScroll startDelay={400} audioPlay={$audioEnabled} typingSpeed={75} text="..." />
-        <TextScroll startDelay={800} audioPlay={$audioEnabled} typingSpeed={100} text="... OK" on:animationComplete={() => handleAnimationComplete(5)} />
-
-    {:else if currentStep >= 6}
+    {:else if currentStep >= 5}
         <TextScroll startDelay={200} audioPlay={$audioEnabled} typingSpeed={50} text="Configuration complete..." /><br>
         <TextScroll startDelay={500} audioPlay={$audioEnabled} typingSpeed={50} text="Welcome to PORTFOLIO-OS(R) V1.0.0!" /><br>
-        <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={50} text="Redirecting to main directory..." on:animationComplete={() => handleAnimationComplete(6)} />
+        <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={50} text="Redirecting to main directory..." on:animationComplete={() => handleAnimationComplete(5)} />
     {/if}
 </section>
 {/if}
