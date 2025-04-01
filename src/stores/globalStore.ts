@@ -9,3 +9,4 @@ export const audioLevel = writable(100); // 0-100
 
 export const isLoggedIn = writable(false);
 export const userID = writable('');
+export const lastLogin = writable('');
