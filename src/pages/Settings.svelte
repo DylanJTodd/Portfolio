@@ -68,16 +68,28 @@
     }
   
     function handleAudioLevelChange(value: number) {
+      if (value < 0 || value > 100) {
+        alert('Audio level must be between 0 and 100.');
+        return;
+      }
       audioLevel.set(value);
       updateSettings({ audio_level: value });
     }
   
     function handleTextSpeedChange(value: number) {
+      if (value < 0.25 || value > 2) {
+        alert('Text speed multiplier must be between 0.25 and 2.');
+        return;
+      }
       textSpeed.set(value);
       updateSettings({ text_speed: value });
     }
   
     function handleFontSizeChange(value: number) {
+      if (value < 0.25 || value > 2) {
+        alert('Font size multiplier must be between 0.25 and 2.');
+        return;
+      }
       fontSize.set(value);
       updateSettings({ font_size: value });
     }
