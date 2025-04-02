@@ -1,5 +1,6 @@
 <script>
   import { currentRoute, navigateTo } from './src/stores/routeStore';
+  import { lowGraphics } from './src/stores/globalStore';
 
   import MainConfig from './src/pages/MainConfig.svelte';
   import Navigation from './src/pages/Navigate.svelte';
@@ -19,11 +20,40 @@
   let route;
   $: currentRoute.subscribe(value => route = value);
 
+  let isLowGraphics;
+  $: lowGraphics.subscribe(value => isLowGraphics = value);
+
   navigateTo('mainConfig');
 </script>
 
 <CursorSVG />
-<TerminalEffect>
+{#if !isLowGraphics}
+  <TerminalEffect>
+    <ColorFilter>
+      <main class="mainstuff">
+        {#if route === 'mainConfig'}
+          <MainConfig />
+        {:else if route === 'navigation'}
+          <Navigation />
+        {:else if route === 'about'}
+          <About />
+        {:else if route === 'projects'}
+          <Projects />
+        {:else if route === 'projects/sql_squid_games'}
+          <SQLSquidGames />
+        {:else if route === 'login'}
+          <Login />
+        {:else if route === 'notes'}
+          <Notes />
+        {:else if route === 'settings'}
+          <Settings />
+        {:else if route === 'contact'}
+          <Contact />
+        {/if}
+      </main>
+    </ColorFilter>
+  </TerminalEffect>
+{:else}
   <ColorFilter>
     <main class="mainstuff">
       {#if route === 'mainConfig'}
@@ -47,4 +77,4 @@
       {/if}
     </main>
   </ColorFilter>
-</TerminalEffect>
+{/if}

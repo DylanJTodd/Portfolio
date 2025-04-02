@@ -3,7 +3,7 @@
   import ChoiceSelector from '../components/choiceselector.svelte';
   import { fly } from 'svelte/transition';
   import { get } from 'svelte/store';
-  import { audioEnabled, terminalColor, fontSize, textSpeed, audioLevel, isLoggedIn, userID, lastLogin } from '../stores/globalStore';
+  import { audioEnabled, terminalColor, fontSize, textSpeed, audioLevel, isLoggedIn, userID, lastLogin, lowGraphics } from '../stores/globalStore';
   import { navigateTo } from '../stores/routeStore';
   
   let username = '';
@@ -42,6 +42,8 @@
             fontSize.set(settings.font_size);
           if (settings.audio_level !== undefined)
             audioLevel.set(settings.audio_level);
+          if (settings.lowGraphics !== undefined)
+            lowGraphics.set(!!settings.lowGraphics);
   
           // Save settings into cookies so that later pages can read them if necessary
           document.cookie = `terminal_color=${settings.terminal_color}; path=/;`;
@@ -49,6 +51,7 @@
           document.cookie = `text_speed=${settings.text_speed}; path=/;`;
           document.cookie = `font_size=${settings.font_size}; path=/;`;
           document.cookie = `audio_level=${settings.audio_level}; path=/;`;
+          document.cookie = `lowGraphics=${settings.lowGraphics ? 1 : 0}; path=/;`;
           
           return true;
         }
@@ -144,7 +147,8 @@
           audio_enabled: get(audioEnabled) ? 1 : 0,
           text_speed: get(textSpeed) || 1,
           font_size: get(fontSize) || 1,
-          audio_level: get(audioLevel) || 100
+          audio_level: get(audioLevel) || 100,
+          lowGraphics: get(lowGraphics) ? 1 : 0
         };
   
         try {
