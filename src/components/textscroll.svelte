@@ -40,9 +40,9 @@
     let skipAnimation = false;
     let componentElement: HTMLDivElement;
     let lastSkipTime = 0;
-    const skipCooldown = 1000;
+    const skipCooldown = 750;
     let animationStartTime = 0;
-    const minAnimationTimeBeforeSkip = 1000;
+    const minAnimationTimeBeforeSkip = 750;
     
     $: showCaret = $activeInstance === instanceId && !hideCaretManually;
     
