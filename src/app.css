@@ -147,6 +147,15 @@ section{
     opacity: 1;
 }
 
+.project-image {
+  float: right;
+  margin-left: 1rem;
+  width: 50vw;
+  margin-top: 2em;
+  transition: opacity 300ms ease-in-out;
+  margin-bottom: 0.5rem;
+}
+
 .contact-form {
     width: fit-content;
     font-family: "Share Tech Mono", serif;

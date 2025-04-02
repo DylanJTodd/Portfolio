@@ -5,11 +5,43 @@
     import { audioEnabled, textSpeed } from '../stores/globalStore';
     import { fly } from 'svelte/transition';
     import { navigateTo } from '../stores/routeStore';
-
+    import { onMount, onDestroy } from 'svelte';
+    import { get } from 'svelte/store';
+    
     let terminalSection: HTMLElement;
     let choiceList: HTMLElement | null = null;
     let showContent = true;
     let currentStep = 1;
+    
+    // Image setup
+    let currentImageIndex = 0;
+    const imagePaths = ['/res/squid1.jpg', '/res/squid2.jpg', '/res/squid3.jpg'];
+    let currentImageSrc = imagePaths[0];
+    let imageOpacity = 1;
+    let intervalId: ReturnType<typeof setInterval>;
+    
+    onMount(() => {
+        intervalId = setInterval(() => {
+            fadeToNextImage();
+        }, 5000);
+    });
+    
+    function fadeToNextImage() {
+        imageOpacity = 0;
+        
+        setTimeout(() => {
+            currentImageIndex = (currentImageIndex + 1) % imagePaths.length;
+            currentImageSrc = imagePaths[currentImageIndex];
+            
+            setTimeout(() => {
+                imageOpacity = 1;
+            }, 50);
+        }, 300);
+    }
+    
+    onDestroy(() => {
+        clearInterval(intervalId);
+    });
 
     function clearTerminal(page: number) {
         showContent = false;
@@ -25,7 +57,7 @@
 
 {#if showContent}
 <section class="terminal-opening" bind:this={terminalSection} in:fly="{{ y: 0, duration: 1000 }}" out:fly="{{ y: -1000, duration: 1000 }}">
-    <img src="/res/squid.jpg" alt="SQL Squid Games Home Page" style="float: right; margin-left: 1rem; width: 50vw; margin-top: 2em;"/><br>
+    <img src={currentImageSrc} alt="SQL Squid Games Home Page" class="project-image" style="opacity: {imageOpacity};"/><br>
 
     {#if currentStep === 1}
         <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={40 * Number($textSpeed)} text="SQL Squid Games was a website I developed when I worked at DataLemur "/>
