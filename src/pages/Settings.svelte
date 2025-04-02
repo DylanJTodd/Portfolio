@@ -26,7 +26,6 @@
     }, 1000);
   }
 
-  // Instead of sending only one field, combine the current settings plus the new partial update.
   async function updateSettings(newSettings: Partial<{
     terminal_color: string;
     audio_enabled: boolean;
@@ -41,7 +40,6 @@
       return;
     }
     
-    // Ensure booleans are properly converted
     const currentLowGraphics = get(lowGraphics);
     
     const settingsToSend = {
@@ -54,7 +52,6 @@
       ...newSettings
     };
     
-    // If new settings contains lowGraphics, ensure it's a proper value
     if ('lowGraphics' in newSettings) {
       settingsToSend.lowGraphics = newSettings.lowGraphics ? 1 : 0;
     }
@@ -64,7 +61,7 @@
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(settingsToSend),
-        credentials: 'include' // Important: Include credentials for session-based auth
+        credentials: 'include'
       });
       
       if (!response.ok) {
@@ -78,7 +75,6 @@
   }
 
   function handleAudioToggle() {
-    // Toggle the value, update store and send the full settings update.
     const newAudioEnabled = !get(audioEnabled);
     audioEnabled.set(newAudioEnabled);
     updateSettings({ audio_enabled: newAudioEnabled });
@@ -112,7 +108,6 @@
   }
 
   function handleColorSelect(color: string) {
-    // Make sure the ColorSelector passes a proper hex code.
     pendingColor = color;
     terminalColor.set(color);
     updateSettings({ terminal_color: color });
@@ -125,10 +120,8 @@
   }
   
   function handleLowGraphicsToggle() {
-    // Toggle the value, update store and send the full settings update.
     const newLowGraphics = !get(lowGraphics);
     lowGraphics.set(newLowGraphics);
-    // Ensure we're sending a proper boolean, not undefined or null
     updateSettings({ lowGraphics: newLowGraphics === true });
   }
 </script>
@@ -136,7 +129,7 @@
 {#if showContent}
   <section class="terminal-settings" bind:this={terminalSection} in:fly={{ y: 0, duration: 1000 }} out:fly={{ y: -1000, duration: 1000 }}>
     {#if currentStep === 1}
-      <TextScroll audioPlay={$audioEnabled} typingSpeed={50} text="Customize your settings" />
+      <TextScroll audioPlay={$audioEnabled} typingSpeed={50 * Number($textSpeed)} text="Customize your settings" />
       <TextScroll hideCaretManually={true} startDelay={500} audioPlay={$audioEnabled} /><br>
       <div>
         <ChoiceSelector

@@ -2,7 +2,7 @@
     import TextScroll from '../components/textscroll.svelte';
     import ChoiceSelector from '../components/choiceselector.svelte';
 
-    import { audioEnabled, isLoggedIn, lastLogin } from '../stores/globalStore';
+    import { audioEnabled, isLoggedIn, lastLogin, textSpeed } from '../stores/globalStore';
     import { fly } from 'svelte/transition';
     import { navigateTo } from '../stores/routeStore';
 
@@ -25,11 +25,11 @@
 </script>
 {#if showContent}
 <section class="terminal-opening" bind:this={terminalSection} in:fly="{{ y: 0, duration: 1000 }}" out:fly="{{ y: -1000, duration: 1000 }}">
-    <TextScroll audioPlay={$audioEnabled} typingSpeed={50} text="Welcome to my portfolio website!"/>
+    <TextScroll audioPlay={$audioEnabled} typingSpeed={50 * Number($textSpeed)} text="Welcome to my portfolio website!"/>
     {#if $lastLogin}
-        <TextScroll startDelay={2000} audioPlay={$audioEnabled} typingSpeed={50} text="Your last login was on {$lastLogin} (Server time)."/>
+        <TextScroll startDelay={2000} audioPlay={$audioEnabled} typingSpeed={50 * Number($textSpeed)} text="Your last login was on {$lastLogin} (Server time)."/>
     {/if}
-    <TextScroll startDelay={1000} audioPlay={$audioEnabled} typingSpeed={50} text="This is a main directory listing. Feel free to navigate to any of the below pages." on:animationComplete={() => { 
+    <TextScroll startDelay={1000} audioPlay={$audioEnabled} typingSpeed={50 * Number($textSpeed)} text="This is a main directory listing. Feel free to navigate to any of the below pages." on:animationComplete={() => { 
         if (choiceList) {
             choiceList.style.visibility = 'visible';
         }

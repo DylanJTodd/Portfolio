@@ -1,7 +1,7 @@
 <script lang="ts">
     import TextScroll from '../components/textscroll.svelte';
     import ChoiceSelector from '../components/choiceselector.svelte';
-    import { audioEnabled, userID } from '../stores/globalStore';
+    import { audioEnabled, userID, textSpeed } from '../stores/globalStore';
     import { navigateTo } from '../stores/routeStore';
     import { onMount } from 'svelte';
     import { fly } from 'svelte/transition';
@@ -178,7 +178,7 @@
 {#if showContent}
 <section class="terminal-notes" bind:this={terminalSection} in:fly="{{ y: 0, duration: 1000 }}" out:fly="{{ y: -1000, duration: 1000 }}">
     {#if !$userID || $userID === ''}
-        <TextScroll audioPlay={$audioEnabled} typingSpeed={50} text="You are not logged in" />
+        <TextScroll audioPlay={$audioEnabled} typingSpeed={50 * Number($textSpeed)} text="You are not logged in" />
         {clearTerminal()}
         {navigateTo('navigate')}
     {:else if currentStep === 1}

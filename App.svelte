@@ -1,6 +1,6 @@
 <script>
   import { currentRoute, navigateTo } from './src/stores/routeStore';
-  import { lowGraphics } from './src/stores/globalStore';
+  import { lowGraphics, fontSize } from './src/stores/globalStore';
 
   import MainConfig from './src/pages/MainConfig.svelte';
   import Navigation from './src/pages/Navigate.svelte';
@@ -16,12 +16,17 @@
   import CursorSVG from './src/components/cursorsvg.svelte';
   import ColorFilter from './src/components/colorfilter.svelte';
 
-  // Subscribe to the currentRoute store
   let route;
   $: currentRoute.subscribe(value => route = value);
 
   let isLowGraphics;
   $: lowGraphics.subscribe(value => isLowGraphics = value);
+
+  let currentFontSize;
+  $: fontSize.subscribe(value => {
+    currentFontSize = value;
+    document.documentElement.style.setProperty('--font-size-multiplier', value);
+  });
 
   navigateTo('mainConfig');
 </script>
@@ -78,3 +83,9 @@
     </main>
   </ColorFilter>
 {/if}
+
+<style>
+  :global(html) {
+    font-size: calc((1rem + 1vw) * var(--font-size-multiplier, 1));
+  }
+</style>

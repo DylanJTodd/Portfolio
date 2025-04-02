@@ -2,7 +2,7 @@
     import TextScroll from '../components/textscroll.svelte';
     import ChoiceSelector from '../components/choiceselector.svelte';
 
-    import { audioEnabled } from '../stores/globalStore';
+    import { audioEnabled, textSpeed } from '../stores/globalStore';
     import { fly } from 'svelte/transition';
     import { navigateTo } from '../stores/routeStore';
 
@@ -24,7 +24,7 @@
 
 {#if showContent}
 <section class="terminal-opening" bind:this={terminalSection} in:fly="{{ y: 0, duration: 1000 }}" out:fly="{{ y: -1000, duration: 1000 }}">
-    <TextScroll startDelay={1000} audioPlay={$audioEnabled} typingSpeed={50} text="Please choose any project name that interests you, and learn what it's about!" on:animationComplete={() => { 
+    <TextScroll startDelay={1000} audioPlay={$audioEnabled} typingSpeed={50 * Number($textSpeed)} text="Please choose any project name that interests you, and learn what it's about!" on:animationComplete={() => { 
         if (choiceList) {
             choiceList.style.visibility = 'visible';
         }

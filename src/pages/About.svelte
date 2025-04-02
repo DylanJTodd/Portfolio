@@ -3,7 +3,7 @@
     import '/src/app.css';
     import TextScroll from '../components/textscroll.svelte';
     import ChoiceSelector from '../components/choiceselector.svelte';
-    import { audioEnabled } from '../stores/globalStore';
+    import { audioEnabled, textSpeed } from '../stores/globalStore';
     import { fly } from 'svelte/transition';
     import { navigateTo } from '../stores/routeStore';
 
@@ -60,9 +60,6 @@
     function handleSelection(step: number, choiceIndex: number) {
         if (transitionInProgress || !inputEnabled || step !== currentStep) return;
         inputEnabled = false;
-        
-        console.log("index: " + choiceIndex);
-        console.log("step: " + currentStep);
 
         if (currentStep === 1) {
             switch (choiceIndex) {
@@ -138,10 +135,10 @@
 <section class="terminal-opening" bind:this={terminalSection} in:fly="{{ y: 0, duration: 1000 }}" out:fly="{{ y: -1000, duration: 1000 }}">
 
     {#if currentStep === 1}
-        <TextScroll audioPlay={$audioEnabled} typingSpeed={30} text="Hello! My name is Dylan Todd. Thank you for viewing my portfolio website." /><br><br>
-        <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={30} text="This website was created for a web design class in my 3rd year of university, inspired by the Fallout 4 terminal." />
-        <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={30} text="It uses the LAMP stack—Linux, Apache, MySQL, and PHP—with Apache hosted via XAMPP and MySQL managed through phpMyAdmin." />
-        <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={30} text="My frontend was built using SvelteKit with TypeScript. Although I initially planned to use TailwindCSS, course requirements led me to another approach." />
+        <TextScroll audioPlay={$audioEnabled} typingSpeed={30 * Number($textSpeed)} text="Hello! My name is Dylan Todd. Thank you for viewing my portfolio website." /><br><br>
+        <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={30 * Number($textSpeed)} text="This website was created for a web design class in my 3rd year of university, inspired by the Fallout 4 terminal." />
+        <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={30 * Number($textSpeed)} text="It uses the LAMP stack—Linux, Apache, MySQL, and PHP—with Apache hosted via XAMPP and MySQL managed through phpMyAdmin." />
+        <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={30 * Number($textSpeed)} text="My frontend was built using SvelteKit with TypeScript. Although I initially planned to use TailwindCSS, course requirements led me to another approach." />
         <TextScroll hideCaretManually={true} startDelay={1} audioPlay={false} on:animationComplete={() => handleAnimationComplete(1)} /><br>
         
         {#if showChoiceSelector && currentStep === 1}
@@ -157,10 +154,10 @@
         {/if}
 
     {:else if currentStep === 2}
-        <TextScroll startDelay={200} audioPlay={$audioEnabled} typingSpeed={40} text="I'm a 3rd year Computer Science student at Laurentian University." />
-        <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={40} text="I have a passion for exploring AI technology, creative coding, and music creation." />
-        <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={40} text="When I'm not immersed in tech, I enjoy gaming, writing, and spending quality time with my family." />
-        <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={40} text="If you'd like, you can view my GitHub profile, check out my LinkedIn page, learn more about the project, or return to the main directory listing." on:animationComplete={() => handleAnimationComplete(2)} />
+        <TextScroll startDelay={200} audioPlay={$audioEnabled} typingSpeed={40 * Number($textSpeed)} text="I'm a 3rd year Computer Science student at Laurentian University." />
+        <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={40 * Number($textSpeed)} text="I have a passion for exploring AI technology, creative coding, and music creation." />
+        <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={40 * Number($textSpeed)} text="When I'm not immersed in tech, I enjoy gaming, writing, and spending quality time with my family." />
+        <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={40 * Number($textSpeed)} text="If you'd like, you can view my GitHub profile, check out my LinkedIn page, learn more about the project, or return to the main directory listing." on:animationComplete={() => handleAnimationComplete(2)} />
         <TextScroll hideCaretManually={true} startDelay={500} audioPlay={false} /><br>
         
         {#if showChoiceSelector && currentStep === 2}

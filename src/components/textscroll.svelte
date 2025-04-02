@@ -21,6 +21,7 @@
     
 <script lang="ts">
     import { onDestroy, onMount, createEventDispatcher } from 'svelte';
+    import { audioLevel } from '../stores/globalStore';
     
     const dispatch = createEventDispatcher();
     
@@ -67,6 +68,13 @@
         typingAudio = new Audio(audioFile + '.mp3');
         audioLength = duration;
         typingAudio.loop = true;
+        
+        // Set volume based on global audio level
+        audioLevel.subscribe(level => {
+            if (typingAudio) {
+                typingAudio.volume = level / 100;
+            }
+        });
     }
     
     function handleKeydown(event: KeyboardEvent) {
@@ -119,6 +127,8 @@
             const startTime = audioLength - totalAnimationTime;
             typingAudio.currentTime = Math.max(0, startTime);
             typingAudio.play();
+            // Apply current audio level
+            typingAudio.volume = $audioLevel / 100;
         }
     
         await typeText();

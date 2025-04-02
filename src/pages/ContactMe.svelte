@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import { navigateTo } from '../stores/routeStore';
-    import { audioEnabled } from '../stores/globalStore';
+    import { audioEnabled, textSpeed } from '../stores/globalStore';
   
     let senderName = '';
     let senderEmail = '';
