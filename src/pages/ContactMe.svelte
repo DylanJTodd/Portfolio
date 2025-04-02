@@ -90,7 +90,7 @@
           id="phoneNumber"
           bind:value={phoneNumber}
           placeholder="Your Phone Number"
-          pattern="^(\+?\d{1,3}[-.\s]?)?(\(?\d{3}\)?[-.\s]?)?\d{3}[-.\s]?\d{4}$"
+          pattern="^(\\+?\\d{1,3}[-.\\s]?)?(\\(?\\d{3}\\)?[-.\\s]?)?\\d{3}[-.\\s]?\\d{4}$"
           title="Please enter a valid phone number."
         />
   
