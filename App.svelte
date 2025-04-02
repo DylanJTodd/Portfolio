@@ -9,6 +9,7 @@
   import Login from './src/pages/Login.svelte';
   import Notes from './src/pages/Notes.svelte';
   import Settings from './src/pages/Settings.svelte';
+  import Contact from './src/pages/ContactMe.svelte';
 
   import TerminalEffect from './src/components/terminaleffect.svelte';
   import CursorSVG from './src/components/cursorsvg.svelte';
@@ -41,6 +42,8 @@
         <Notes />
       {:else if route === 'settings'}
         <Settings />
+      {:else if route === 'contact'}
+        <Contact />
       {/if}
     </main>
   </ColorFilter>

@@ -20,7 +20,7 @@
         }, 1000);
     }
 
-    const choices = ['Projects', 'About', $isLoggedIn ? 'Notes' : 'Must be logged in to view', $isLoggedIn ? 'Settings' : 'Must be logged in to view'];
+    const choices = ['Projects', 'About', 'Contact Me', $isLoggedIn ? 'Notes' : 'Must be logged in to view', $isLoggedIn ? 'Settings' : 'Must be logged in to view'];
     const disabledChoices = !$isLoggedIn ? [2,3] : [];
 </script>
 {#if showContent}
@@ -45,8 +45,9 @@
                 clearTerminal();
                 if (index === 0) navigateTo('projects');
                 if (index === 1) navigateTo('about');
-                if (index === 2) navigateTo('notes');
-                if (index === 3) navigateTo('settings');
+                if (index === 2) navigateTo('contact');
+                if (index === 3) navigateTo('notes');
+                if (index === 4) navigateTo('settings');
             }}
         />
     </p>
