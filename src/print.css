@@ -1,0 +1,82 @@
+/* Print Stylesheet for the Terminal Project */
+@media print {
+    html, body {
+      background: white !important;
+      color: black !important;
+      overflow: visible !important;
+      height: auto !important;
+    }
+  
+    main, .terminal-opening, .mainstuff {
+      position: static !important;
+      width: 100% !important;
+      height: auto !important;
+      padding: 0.5in !important;
+      overflow: visible !important;
+    }
+
+    .project-image {
+      float: none !important;
+      display: block !important;
+      margin: 1rem auto !important;
+      width: 60% !important;
+      max-width: 5in !important;
+      page-break-inside: avoid !important;
+    }
+  
+    * {
+      font-family: "Share Tech Mono", monospace !important;
+      color: black !important;
+      text-shadow: none !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+  
+    ::selection {
+      background-color: transparent !important;
+      color: black !important;
+    }
+  
+    .caret {
+      display: none !important;
+    }
+  
+    .form-grid input,
+    .form-grid textarea {
+      border: 1px solid #ccc !important;
+      background-color: white !important;
+      color: black !important;
+    }
+  
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+  
+    form button, 
+    .no-print {
+      display: none !important;
+    }
+  
+    section {
+      page-break-before: auto;
+      page-break-after: auto;
+      page-break-inside: avoid;
+    }
+  
+    a {
+      text-decoration: underline !important;
+      color: black !important;
+    }
+  
+    a::after {
+      content: " (" attr(href) ")";
+      font-size: 0.8rem;
+    }
+  }
