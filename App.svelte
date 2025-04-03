@@ -11,6 +11,7 @@
   import Notes from './src/pages/Notes.svelte';
   import Settings from './src/pages/Settings.svelte';
   import Contact from './src/pages/ContactMe.svelte';
+  import MessageManager from './src/pages/ManageMessages.svelte';
 
   import TerminalEffect from './src/components/terminaleffect.svelte';
   import CursorSVG from './src/components/cursorsvg.svelte';
@@ -54,6 +55,8 @@
           <Settings />
         {:else if route === 'contact'}
           <Contact />
+        {:else if route === 'messagemanager'}
+          <MessageManager />
         {/if}
       </main>
     </ColorFilter>

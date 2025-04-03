@@ -2,6 +2,7 @@
     import { onMount } from 'svelte';
 
     export let choices: string[] = [];
+    export let customClasses: string[] = [];
     export let onSelect: (index: number) => void;
     export let isActive: boolean = false;
     export let disabledChoices: number[] = [];
@@ -89,9 +90,7 @@
 
 {#each choices as choice, i}
 <button
-    class="terminal-choice"
-    class:choice-selected={i === currentIndex || selectedIndexes.has(i)}
-    class:is-disabled={disabledChoices.includes(i)}
+    class={`terminal-choice ${customClasses[i]} ${i === currentIndex || selectedIndexes.has(i) ? 'choice-selected' : ''} ${disabledChoices.includes(i) ? 'is-disabled' : ''}`}
     on:click={() => handleClick(i)}
     on:mouseenter={() => handleHover(i)}
     disabled={!isActive || disabledChoices.includes(i)}

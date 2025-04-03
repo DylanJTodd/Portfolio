@@ -1,14 +1,29 @@
 <script lang="ts">
     import TextScroll from '../components/textscroll.svelte';
     import ChoiceSelector from '../components/choiceselector.svelte';
+    import { onMount } from 'svelte';
 
-    import { audioEnabled, isLoggedIn, lastLogin, textSpeed } from '../stores/globalStore';
+    import { audioEnabled, isLoggedIn, lastLogin, textSpeed, userID } from '../stores/globalStore';
     import { fly } from 'svelte/transition';
     import { navigateTo } from '../stores/routeStore';
 
     let terminalSection: HTMLElement;
     let choiceList: HTMLParagraphElement;
     let showContent = true;
+    let isAdmin = false;
+
+    onMount(() => {
+        if ($isLoggedIn) {
+            fetch(`/api/users/${$userID}`)
+                .then(res => res.json())
+                .then(user => {
+                    isAdmin = user.is_admin;
+                })
+                .catch(error => {
+                    console.error('Error checking admin status:', error);
+                });
+        }
+    });
 
     function clearTerminal() {
         showContent = false;
@@ -20,8 +35,16 @@
         }, 1000);
     }
 
-    const choices = ['Projects', 'About', 'Contact Me', $isLoggedIn ? 'Notes' : 'Must be logged in to view', $isLoggedIn ? 'Settings' : 'Must be logged in to view'];
-    const disabledChoices = !$isLoggedIn ? [3,4] : [];
+    $: choices = [
+        'Projects', 
+        'About', 
+        'Contact Me', 
+        $isLoggedIn ? 'Notes' : 'Must be logged in to view', 
+        $isLoggedIn ? 'Settings' : 'Must be logged in to view',
+        ...(isAdmin ? ['Message Manager'] : [])
+    ];
+    
+    $: disabledChoices = !$isLoggedIn ? [3, 4] : [];
 </script>
 {#if showContent}
 <section class="terminal-opening" bind:this={terminalSection} in:fly="{{ y: 0, duration: 1000 }}" out:fly="{{ y: -1000, duration: 1000 }}">
@@ -48,6 +71,7 @@
                 if (index === 2) navigateTo('contact');
                 if (index === 3) navigateTo('notes');
                 if (index === 4) navigateTo('settings');
+                if (index === 5 && isAdmin) navigateTo('messagemanager');
             }}
         />
     </p>
