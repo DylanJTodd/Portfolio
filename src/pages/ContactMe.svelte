@@ -1,7 +1,5 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
     import { navigateTo } from '../stores/routeStore';
-    import { audioEnabled, textSpeed } from '../stores/globalStore';
   
     let senderName = '';
     let senderEmail = '';
@@ -53,7 +51,6 @@
   </script>
   
   <section class="contact-form">
-    <h1>Contact Me</h1>
     <p>Please fill out the form below to send me a message. Fields marked with * are required.</p>
   
     {#if errorMessage}
@@ -112,5 +109,6 @@
         ></textarea>
       </div>
       <button type="submit">Send Message</button>
+      <button type="button" on:click={() => navigateTo('navigation')}>Return</button>
     </form>
   </section>
