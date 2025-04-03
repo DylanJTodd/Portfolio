@@ -1,6 +1,6 @@
-<script>
-  import { currentRoute, navigateTo } from './src/stores/routeStore';
-  import { lowGraphics, fontSize } from './src/stores/globalStore';
+<script lang="ts">
+  import { currentRoute, breadcrumbs, navigateTo } from './src/stores/routeStore';
+  import { lowGraphics, fontSize, terminalColor } from './src/stores/globalStore';
 
   import MainConfig from './src/pages/MainConfig.svelte';
   import Navigation from './src/pages/Navigate.svelte';
@@ -17,74 +17,84 @@
   import CursorSVG from './src/components/cursorsvg.svelte';
   import ColorFilter from './src/components/colorfilter.svelte';
 
-  let route;
-  $: currentRoute.subscribe(value => route = value);
+  $: route = $currentRoute;
+  $: isLowGraphics = $lowGraphics;
+  $: currentFontSize = $fontSize;
+  $: baseColor = $terminalColor; // Use the imported store value
 
-  let isLowGraphics;
-  $: lowGraphics.subscribe(value => isLowGraphics = value);
-
-  let currentFontSize;
-  $: fontSize.subscribe(value => {
-    currentFontSize = value;
-    document.documentElement.style.setProperty('--font-size-multiplier', value);
-  });
+  $: if (typeof document !== 'undefined') {
+    document.documentElement.style.setProperty('--font-size-multiplier', currentFontSize.toString());
+  }
 
   navigateTo('mainConfig');
+
+  const components = {
+    mainConfig: MainConfig,
+    navigation: Navigation,
+    about: About,
+    projects: Projects,
+    'projects/sql_squid_games': SQLSquidGames,
+    login: Login,
+    notes: Notes,
+    settings: Settings,
+    contact: Contact,
+    messagemanager: MessageManager,
+  };
+
+  $: CurrentPageComponent = components[route] || Navigation;
+
 </script>
 
 <CursorSVG />
-{#if !isLowGraphics}
+
+{#if isLowGraphics}
+  <ColorFilter>
+      {#if route !== 'mainConfig' && route !== 'login'}
+        <nav class="breadcrumb" style="--breadcrumb-base-color: {baseColor};">
+          {#each $breadcrumbs as crumb, index}
+            <button
+              type="button"
+              class="breadcrumb-item"
+              on:click={() => navigateTo(crumb)}
+              on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') navigateTo(crumb); }}
+            >
+              {crumb.includes('/') ? crumb.split('/').pop() : crumb}
+            </button>
+            {#if index < $breadcrumbs.length - 1}
+              <span class="breadcrumb-separator">></span>
+            {/if}
+          {/each}
+        </nav>
+      {/if}
+      <main class="mainstuff">
+         <svelte:component this={CurrentPageComponent} />
+      </main>
+  </ColorFilter>
+{:else}
   <TerminalEffect>
     <ColorFilter>
-      <main class="mainstuff">
-        {#if route === 'mainConfig'}
-          <MainConfig />
-        {:else if route === 'navigation'}
-          <Navigation />
-        {:else if route === 'about'}
-          <About />
-        {:else if route === 'projects'}
-          <Projects />
-        {:else if route === 'projects/sql_squid_games'}
-          <SQLSquidGames />
-        {:else if route === 'login'}
-          <Login />
-        {:else if route === 'notes'}
-          <Notes />
-        {:else if route === 'settings'}
-          <Settings />
-        {:else if route === 'contact'}
-          <Contact />
-        {:else if route === 'messagemanager'}
-          <MessageManager />
+        {#if route !== 'mainConfig' && route !== 'login'}
+          <nav class="breadcrumb" style="--breadcrumb-base-color: {baseColor};">
+            {#each $breadcrumbs as crumb, index}
+              <button
+                type="button"
+                class="breadcrumb-item"
+                on:click={() => navigateTo(crumb)}
+                on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') navigateTo(crumb); }}
+              >
+                 {crumb.includes('/') ? crumb.split('/').pop() : crumb}
+              </button>
+              {#if index < $breadcrumbs.length - 1}
+                <span class="breadcrumb-separator">></span>
+              {/if}
+            {/each}
+          </nav>
         {/if}
-      </main>
+        <main class="mainstuff">
+           <svelte:component this={CurrentPageComponent} />
+        </main>
     </ColorFilter>
   </TerminalEffect>
-{:else}
-  <ColorFilter>
-    <main class="mainstuff">
-      {#if route === 'mainConfig'}
-        <MainConfig />
-      {:else if route === 'navigation'}
-        <Navigation />
-      {:else if route === 'about'}
-        <About />
-      {:else if route === 'projects'}
-        <Projects />
-      {:else if route === 'projects/sql_squid_games'}
-        <SQLSquidGames />
-      {:else if route === 'login'}
-        <Login />
-      {:else if route === 'notes'}
-        <Notes />
-      {:else if route === 'settings'}
-        <Settings />
-      {:else if route === 'contact'}
-        <Contact />
-      {/if}
-    </main>
-  </ColorFilter>
 {/if}
 
 <style>
