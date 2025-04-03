@@ -1,12 +1,12 @@
 <script lang="ts">
-    import { onDestroy } from 'svelte';
+    import { onDestroy, tick, onMount } from 'svelte';
     import { get } from 'svelte/store';
     import '/src/app.css';
     import TextScroll from '../components/textscroll.svelte';
     import ChoiceSelector from '../components/choiceselector.svelte';
     import ColorSelector from '../components/colorselector.svelte';
 
-    import { audioEnabled, terminalColor, lowGraphics } from '../stores/globalStore';
+    import { audioEnabled, terminalColor, lowGraphics, textSpeed } from '../stores/globalStore';
     import { fly } from 'svelte/transition';
     import { navigateTo } from '../stores/routeStore';
 
@@ -18,46 +18,40 @@
     let pendingTransition: number | null = null;
     let showChoiceSelector = false;
 
-    // Local copies of settings. We initialize them from the global stores.
     let localAudioEnabled: boolean = get(audioEnabled);
     let localTerminalColor: string = get(terminalColor);
     let localLowGraphics: boolean = get(lowGraphics);
 
     function loadCookies() {
-        const audioCookie = document.cookie.split('; ').find(row => row.startsWith('audioEnabled='));
-        const colorCookie = document.cookie.split('; ').find(row => row.startsWith('terminalColor='));
-        const graphicsCookie = document.cookie.split('; ').find(row => row.startsWith('lowGraphics='));
-        if (audioCookie) {
-            const value = audioCookie.split('=')[1] === 'true';
-            audioEnabled.set(value);
-            localAudioEnabled = value;
-        }
-        if (colorCookie) {
-            const color = colorCookie.split('=')[1];
-            terminalColor.set(color);
-            localTerminalColor = color;
-        }
-        if (graphicsCookie) {
-            const value = graphicsCookie.split('=')[1] === 'true';
-            lowGraphics.set(value);
-            localLowGraphics = value;
-        }
+        const cookies = document.cookie.split('; ');
+        const audioCookie = cookies.find(row => row.startsWith('audioEnabled='));
+        const colorCookie = cookies.find(row => row.startsWith('terminalColor='));
+        const graphicsCookie = cookies.find(row => row.startsWith('lowGraphics='));
+
+        if (audioCookie) localAudioEnabled = audioCookie.split('=')[1] === 'true';
+        if (colorCookie) localTerminalColor = colorCookie.split('=')[1];
+        if (graphicsCookie) localLowGraphics = graphicsCookie.split('=')[1] === 'true';
+
+        audioEnabled.set(localAudioEnabled);
+        terminalColor.set(localTerminalColor);
+        lowGraphics.set(localLowGraphics);
     }
 
-    // Instead of updating stores as soon as a choice is made,
-    // update them (and the cookies) only at the very end.
     function updateGlobalSettingsAndCookies() {
         audioEnabled.set(localAudioEnabled);
         terminalColor.set(localTerminalColor);
         lowGraphics.set(localLowGraphics);
-        document.cookie = `audioEnabled=${localAudioEnabled}; path=/;`;
-        document.cookie = `terminalColor=${localTerminalColor}; path=/;`;
-        document.cookie = `lowGraphics=${localLowGraphics}; path=/;`;
+        document.cookie = `audioEnabled=${localAudioEnabled}; path=/; max-age=31536000`;
+        document.cookie = `terminalColor=${localTerminalColor}; path=/; max-age=31536000`;
+        document.cookie = `lowGraphics=${localLowGraphics}; path=/; max-age=31536000`;
     }
 
-    if (typeof window !== 'undefined') {
-        loadCookies();
-    }
+    onMount(() => {
+        if (typeof document !== 'undefined') {
+            loadCookies();
+            window.addEventListener('keydown', handleKeydown);
+        }
+    });
 
     function requestTransition(nextStep: number) {
         if (transitionInProgress) {
@@ -71,30 +65,33 @@
         showChoiceSelector = false;
         executeTransition(nextStep);
     }
-    
+
+    // --- Restored Original executeTransition Logic ---
     function executeTransition(nextStep: number) {
-        showContent = false;
-        
+        showContent = false; // Trigger out animation
+
         setTimeout(() => {
+            // Restore explicit clearing and step update order
             if (terminalSection) {
-                terminalSection.innerHTML = '';
-                currentStep = nextStep;
+                terminalSection.innerHTML = ''; // Explicitly clear
+                currentStep = nextStep;         // Update step *after* clearing
             }
-            
-            // When finishing configuration, update the stores/cookies and navigate.
+
+            // Handle navigation steps (remain the same)
             if (nextStep === -1) {
-                // For Log In flow
                 updateGlobalSettingsAndCookies();
                 navigateTo('login');
                 return;
             } else if (nextStep === -2) {
-                // For Navigation flow
                 updateGlobalSettingsAndCookies();
                 navigateTo('navigation');
                 return;
             }
-            
+
+            // Trigger in animation (remains the same)
             showContent = true;
+
+            // Restore original inner timeout delay
             setTimeout(() => {
                 transitionInProgress = false;
                 if (pendingTransition !== null) {
@@ -102,9 +99,11 @@
                     pendingTransition = null;
                     executeTransition(next);
                 }
-            }, 1200);
-        }, 1000);
+            }, 1200); // Using original 1200ms delay
+
+        }, 1000); // Match out:fly duration
     }
+     // --- End of Restored Logic ---
 
     function handleSelection(step: number, choiceIndex: number) {
         if (transitionInProgress || !inputEnabled || step !== currentStep) return;
@@ -120,58 +119,58 @@
                 else if (choiceIndex === 1) requestTransition(6);
                 break;
             case 3:
-                // Update local selection for low graphics.
-                // (choiceIndex 0: Enable, 1: Disable)
                 localLowGraphics = (choiceIndex === 0);
                 requestTransition(4);
                 break;
             case 4:
-                // Update local selection for audio.
-                // (choiceIndex 0: Enable, 1: Disable)
                 localAudioEnabled = (choiceIndex === 0);
                 requestTransition(5);
                 break;
             default:
+                 inputEnabled = true;
                 break;
         }
     }
 
     function handleKeydown(event: KeyboardEvent) {
         if (!inputEnabled || transitionInProgress) return;
-        
+
         if (event.key === 'Enter') {
             if (currentStep === 5) {
-                // On step 5 (Terminal Color Configuration), Enter moves us to step 6.
                 inputEnabled = false;
                 requestTransition(6);
             } else if (currentStep === 6) {
-                // On final screen, Enter finalizes configuration.
                 inputEnabled = false;
                 requestTransition(-2);
             }
         }
     }
 
-    function handleAnimationComplete(step: number) {
+    // Keep the tick-based scrolling fix here
+    async function handleAnimationComplete(step: number) {
         if (transitionInProgress || step !== currentStep) return;
-        
+
         if ([1, 2, 3, 4, 5].includes(step)) {
-            setTimeout(() => {
-                if (!transitionInProgress && currentStep === step) {
-                    showChoiceSelector = true;
-                    inputEnabled = true;
+            await tick();
+             if (!transitionInProgress && currentStep === step) {
+                showChoiceSelector = true;
+                inputEnabled = true;
+                await tick();
+                if (terminalSection) {
+                    terminalSection.scrollTo({
+                        top: terminalSection.scrollHeight,
+                        behavior: 'smooth'
+                    });
                 }
-            }, 100);
+            }
         } else if (step === 6) {
             inputEnabled = false;
             setTimeout(() => {
-                requestTransition(-2);
-            }, 2000);
+                 if (!transitionInProgress && currentStep === 6) {
+                    requestTransition(-2);
+                 }
+            }, 1500);
         }
-    }
-
-    if (typeof window !== 'undefined') {
-        window.addEventListener('keydown', handleKeydown);
     }
 
     onDestroy(() => {
@@ -183,110 +182,110 @@
 
 {#if showContent}
 <section class="terminal-opening" bind:this={terminalSection} in:fly="{{ y: 0, duration: 1000 }}" out:fly="{{ y: -1000, duration: 1000 }}">
+    {#key currentStep}
+        {#if currentStep === 1}
+            <TextScroll audioPlay={localAudioEnabled} typingSpeed={50 * Number(get(textSpeed))} text="*************** PORTFOLIO-OS(R) V1.0.0 ***************" />
+            <br><br>
+            <TextScroll startDelay={1000} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="Setting up configuration..." />
+            <TextScroll startDelay={400} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="..." />
+            <TextScroll startDelay={700} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="..." />
+            <TextScroll startDelay={1000} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="Logging In." />
+            <TextScroll hideCaretManually={false} startDelay={1} audioPlay={false} text="" on:animationComplete={() => handleAnimationComplete(1)} />
+            <br>
 
-    {#if currentStep === 1}
-        <TextScroll audioPlay={$audioEnabled} typingSpeed={50} text="*************** PORTFOLIO-OS(R) V1.0.0 ***************" /><br><br>
-        <TextScroll startDelay={1000} audioPlay={$audioEnabled} typingSpeed={75} text="Setting up configuration..." />
-        <TextScroll startDelay={400} audioPlay={$audioEnabled} typingSpeed={75} text="..." />
-        <TextScroll startDelay={700} audioPlay={$audioEnabled} typingSpeed={75} text="..." />
-        <TextScroll startDelay={1000} audioPlay={$audioEnabled} typingSpeed={75} text="Logging In." />
-        <TextScroll hideCaretManually={true} startDelay={1} audioPlay={false} on:animationComplete={() => handleAnimationComplete(1)} /><br>
-        
-        {#if showChoiceSelector && currentStep === 1}
-            {#key currentStep}
+            {#if showChoiceSelector && currentStep === 1}
                 <p class="choice-list">
-                    <ChoiceSelector 
+                    <ChoiceSelector
                         choices={['Log In', 'Use Guest Mode']}
                         isActive={inputEnabled && !transitionInProgress}
                         onSelect={(index) => handleSelection(1, index)}
                     />
                 </p>
-            {/key}
-        {/if}
+            {/if}
 
-    {:else if currentStep === 2}
-        <TextScroll startDelay={400} audioPlay={$audioEnabled} typingSpeed={75} text="Initializing Configuration..." />
-        <TextScroll startDelay={400} audioPlay={$audioEnabled} typingSpeed={30} text="..." />
-        <TextScroll startDelay={1000} audioPlay={$audioEnabled} typingSpeed={75} text="Customize Terminal?" />
-        <TextScroll hideCaretManually={true} startDelay={1} audioPlay={false} on:animationComplete={() => handleAnimationComplete(2)} /><br>
+        {:else if currentStep === 2}
+            <TextScroll startDelay={400} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="Initializing Configuration..." />
+            <TextScroll startDelay={400} audioPlay={localAudioEnabled} typingSpeed={30 * Number(get(textSpeed))} text="..." />
+            <TextScroll startDelay={1000} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="Customize Terminal?" />
+            <TextScroll hideCaretManually={false} startDelay={1} audioPlay={false} text="" on:animationComplete={() => handleAnimationComplete(2)} />
+            <br>
 
-        {#if showChoiceSelector && currentStep === 2}
-            {#key currentStep}
+            {#if showChoiceSelector && currentStep === 2}
                 <p class="choice-list">
-                    <ChoiceSelector 
+                    <ChoiceSelector
                         choices={['Customize Terminal', 'Use Preconfigured Settings']}
                         isActive={inputEnabled && !transitionInProgress}
                         onSelect={(index) => handleSelection(2, index)}
                     />
                 </p>
-            {/key}
-        {/if}
+            {/if}
 
-    {:else if currentStep === 3}
-        <TextScroll startDelay={400} audioPlay={$audioEnabled} typingSpeed={75} text="..." />
-        <TextScroll startDelay={400} audioPlay={$audioEnabled} typingSpeed={30} text="Enable Low Graphics mode? (Better for low specs)" />
-        <TextScroll hideCaretManually={true} startDelay={1} audioPlay={false} on:animationComplete={() => handleAnimationComplete(3)} /><br>
+        {:else if currentStep === 3}
+            <TextScroll startDelay={400} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="..." />
+            <TextScroll startDelay={400} audioPlay={localAudioEnabled} typingSpeed={30 * Number(get(textSpeed))} text="Enable Low Graphics mode? (Better for low specs)" />
+            <TextScroll hideCaretManually={false} startDelay={1} audioPlay={false} text="" on:animationComplete={() => handleAnimationComplete(3)} />
+            <br>
 
-        {#if showChoiceSelector && currentStep === 3}
-            {#key currentStep}
+            {#if showChoiceSelector && currentStep === 3}
                 <p class="choice-list">
-                    <ChoiceSelector 
+                    <ChoiceSelector
                         choices={['Enable', 'Disable']}
                         isActive={inputEnabled && !transitionInProgress}
                         onSelect={(index) => handleSelection(3, index)}
                     />
                 </p>
-            {/key}
-        {/if}
+            {/if}
 
-    {:else if currentStep === 4}
-        <TextScroll startDelay={400} audioPlay={$audioEnabled} typingSpeed={75} text="..." />
-        <TextScroll startDelay={1000} audioPlay={$audioEnabled} typingSpeed={75} text="..." />
-        <TextScroll startDelay={1000} audioPlay={$audioEnabled} typingSpeed={75} text="Enable Audio?" />
-        <TextScroll hideCaretManually={true} startDelay={1} audioPlay={false} on:animationComplete={() => handleAnimationComplete(4)} /><br>
+        {:else if currentStep === 4}
+            <TextScroll startDelay={400} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="..." />
+            <TextScroll startDelay={1000} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="..." />
+            <TextScroll startDelay={1000} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="Enable Audio?" />
+            <TextScroll hideCaretManually={false} startDelay={1} audioPlay={false} text="" on:animationComplete={() => handleAnimationComplete(4)} />
+            <br>
 
-        {#if showChoiceSelector && currentStep === 4}
-            {#key currentStep}
+            {#if showChoiceSelector && currentStep === 4}
                 <p class="choice-list">
-                    <ChoiceSelector 
+                    <ChoiceSelector
                         choices={['Enable Audio', 'Disable Audio']}
                         isActive={inputEnabled && !transitionInProgress}
                         onSelect={(index) => handleSelection(4, index)}
                     />
                 </p>
-            {/key}
-        {/if}
+            {/if}
 
-    {:else if currentStep === 5}    
-        <TextScroll startDelay={400} audioPlay={$audioEnabled} typingSpeed={75} text="..." />
-        <TextScroll startDelay={500} audioPlay={$audioEnabled} typingSpeed={75} text={localAudioEnabled ? "Audio Enabled" : "Audio Disabled"} />
-        <TextScroll audioPlay={$audioEnabled} typingSpeed={50} text="Terminal Color Configuration" hideCaretManually={true} />
-        <TextScroll startDelay={500} audioPlay={$audioEnabled} typingSpeed={75} text="Enter a color:" />
-        <TextScroll hideCaretManually={true} startDelay={1} audioPlay={false} on:animationComplete={() => handleAnimationComplete(5)} /><br>
+        {:else if currentStep === 5}
+            <TextScroll startDelay={400} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="..." />
+            <TextScroll startDelay={500} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text={localAudioEnabled ? "Audio Enabled" : "Audio Disabled"} />
+            <TextScroll audioPlay={localAudioEnabled} typingSpeed={50 * Number(get(textSpeed))} text="Terminal Color Configuration" hideCaretManually={true} />
+            <TextScroll startDelay={500} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="Select a color:" />
+            <TextScroll hideCaretManually={false} startDelay={1} audioPlay={false} text="" on:animationComplete={() => handleAnimationComplete(5)} />
+             <br>
 
-        {#if showChoiceSelector && currentStep === 5}
-            {#key currentStep}
-                <p class="choice-list">
-                    <ColorSelector 
+            {#if showChoiceSelector && currentStep === 5}
+                 <div class="choice-list">
+                    <ColorSelector
                         onColorSelect={(color) => {
                             localTerminalColor = color;
                         }}
                         onContinue={() => {
-                            if (!transitionInProgress) {
+                            if (!transitionInProgress && inputEnabled) {
                                 inputEnabled = false;
                                 requestTransition(6);
                             }
                         }}
                         isActive={inputEnabled && !transitionInProgress}
-                    />
-                </p>
-            {/key}
-        {/if}
 
-    {:else if currentStep >= 6}
-        <TextScroll startDelay={200} audioPlay={$audioEnabled} typingSpeed={50} text="Configuration complete..." /><br>
-        <TextScroll startDelay={500} audioPlay={$audioEnabled} typingSpeed={50} text="Welcome to PORTFOLIO-OS(R) V1.0.0!" /><br>
-        <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={50} text="Redirecting to main directory..." on:animationComplete={() => handleAnimationComplete(6)} />
-    {/if}
+                    />
+                </div>
+            {/if}
+
+        {:else if currentStep >= 6}
+            <TextScroll startDelay={200} audioPlay={localAudioEnabled} typingSpeed={50 * Number(get(textSpeed))} text="Configuration complete..." />
+            <br>
+            <TextScroll startDelay={500} audioPlay={localAudioEnabled} typingSpeed={50 * Number(get(textSpeed))} text="Welcome to PORTFOLIO-OS(R) V1.0.0!" />
+            <br>
+            <TextScroll startDelay={100} audioPlay={localAudioEnabled} typingSpeed={50 * Number(get(textSpeed))} text="Redirecting to main directory..." on:animationComplete={() => handleAnimationComplete(6)} />
+        {/if}
+    {/key}
 </section>
 {/if}
