@@ -28,18 +28,15 @@
         executeTransition(nextStep);
     }
 
-    // --- Restored Original executeTransition Logic ---
     function executeTransition(nextStep: number) {
-        showContent = false; // Trigger out animation
+        showContent = false;
 
         setTimeout(() => {
-            // Restore explicit clearing and step update order
             if (terminalSection) {
-                terminalSection.innerHTML = ''; // Explicitly clear
-                currentStep = nextStep;         // Update step *after* clearing
+                terminalSection.innerHTML = '';
+                currentStep = nextStep;
             }
 
-            // Handle navigation steps (remain the same)
             if (nextStep === -1) {
                 navigateTo('login');
                 return;
@@ -48,10 +45,8 @@
                 return;
             }
 
-            // Trigger in animation (remains the same)
             showContent = true;
 
-            // Restore original inner timeout delay if needed, or keep shorter one
             setTimeout(() => {
                 transitionInProgress = false;
                 if (pendingTransition !== null) {
@@ -59,11 +54,10 @@
                     pendingTransition = null;
                     executeTransition(next);
                 }
-            }, 1200); // Using original longer delay from MainConfig example
+            }, 1200);
 
-        }, 1000); // Match out:fly duration
+        }, 1000);
     }
-    // --- End of Restored Logic ---
 
     function handleSelection(step: number, choiceIndex: number) {
         if (transitionInProgress || !inputEnabled || step !== currentStep) return;
@@ -108,7 +102,6 @@
         }
     }
 
-    // Keep the tick-based scrolling fix here
     async function handleAnimationComplete(step: number) {
         if (transitionInProgress || step !== currentStep) return;
 
@@ -135,12 +128,11 @@
     {#key currentStep}
         {#if currentStep === 1}
             <TextScroll audioPlay={$audioEnabled} typingSpeed={30 * Number($textSpeed)} text="Hello! My name is Dylan Todd. Thank you for viewing my portfolio website." />
-            <br><br>
             <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={30 * Number($textSpeed)} text="This website was created for a web design class in my 3rd year of university, inspired by the Fallout 4 terminal." />
-            <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={30 * Number($textSpeed)} text="It uses the LAMP stack—Linux, Apache, MySQL, and PHP—with Apache hosted via XAMPP and MySQL managed through phpMyAdmin." />
-            <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={30 * Number($textSpeed)} text="My frontend was built using SvelteKit with TypeScript. Although I initially planned to use TailwindCSS, course requirements led me to another approach." />
-            <TextScroll hideCaretManually={false} startDelay={1} audioPlay={false} text="" on:animationComplete={() => handleAnimationComplete(1)} />
-            <br>
+            <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={30 * Number($textSpeed)} text="It uses the LAMP stack—Linux, Apache, MySQL, and PHP with Apache hosted via HTTPD and MySQL managed through MariaDB. The server is hosted on a free instance of oracle." />
+            <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={30 * Number($textSpeed)} text="My frontend was built using Svelte, with TypeScript. My backend is communicated to via a RESTful API, that securely manages all communications." />
+            <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={30 * Number($textSpeed)} text="You can find all of the code (aside from the sensitive backend) via GitHub" />
+            <TextScroll hideCaretManually={true} startDelay={1} audioPlay={false} text="" on:animationComplete={() => handleAnimationComplete(1)} />
 
             {#if showChoiceSelector && currentStep === 1}
                 <p class="choice-list">
@@ -157,8 +149,7 @@
             <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={40 * Number($textSpeed)} text="I have a passion for exploring AI technology, creative coding, and music creation." />
             <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={40 * Number($textSpeed)} text="When I'm not immersed in tech, I enjoy gaming, writing, and spending quality time with my family." />
             <TextScroll startDelay={0} audioPlay={$audioEnabled} typingSpeed={40 * Number($textSpeed)} text="If you'd like, you can view my GitHub profile, check out my LinkedIn page, learn more about the project, or return to the main directory listing." />
-            <TextScroll hideCaretManually={false} startDelay={1} audioPlay={false} text="" on:animationComplete={() => handleAnimationComplete(2)} />
-            <br>
+            <TextScroll hideCaretManually={true} startDelay={1} audioPlay={false} text="" on:animationComplete={() => handleAnimationComplete(2)} />
 
             {#if showChoiceSelector && currentStep === 2}
                 <p class="choice-list">
@@ -173,10 +164,3 @@
     {/key}
 </section>
 {/if}
-
-<style>
-    .choice-list {
-        margin-top: 1.5rem;
-        margin-bottom: 2rem;
-    }
-</style>

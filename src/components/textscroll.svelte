@@ -1,5 +1,4 @@
 <script lang="ts" context="module">
-    // --- Module script remains the same ---
     import { writable } from 'svelte/store';
 
     const isAnyScrolling = writable(false);
@@ -21,7 +20,6 @@
 </script>
 
 <script lang="ts">
-    // --- Instance script keeps scrolling fixes, restores original caret logic ---
     import { onDestroy, onMount, createEventDispatcher, tick } from 'svelte';
     import { audioLevel } from '../stores/globalStore';
 
@@ -34,7 +32,6 @@
     export let audioPlay: boolean = true;
 
     let displayedText: string = "";
-    // *** Restored: Variable for caret visibility ***
     let isCaretVisible: boolean = true;
     let typingAudio: HTMLAudioElement | null = null;
     let audioLength: number = 0;
@@ -49,10 +46,8 @@
     const minAnimationTimeBeforeSkip = 750;
     let unsubscribeAudioLevel: (() => void) | null = null;
 
-    // *** Restored: Computed variable for showing caret ***
     $: showCaret = $activeInstance === instanceId && !hideCaretManually;
 
-    // selectAudioFile remains the same
     function selectAudioFile(speed: number): [string, number] {
         if (speed <= 25) {
             const files = [
@@ -69,7 +64,6 @@
         }
     }
 
-    // setupAudio remains the same
     function setupAudio() {
          if (typeof window !== 'undefined' && audioPlay && !typingAudio) {
             const [audioFile, duration] = selectAudioFile(typingSpeed);
@@ -91,7 +85,6 @@
         }
     }
 
-     // handleKeydown: Restore original logic exactly
      function handleKeydown(event: KeyboardEvent) {
         if (event.code === 'Space' && isTyping && $activeInstance === instanceId) {
             event.preventDefault();
@@ -104,10 +97,8 @@
                 currentTime - lastSkipTime >= skipCooldown) {
 
                 skipAnimation = true;
-                // *** Original also set these here ***
                 isTyping = false;
                 displayedText = text;
-                // *** --- ***
                 lastSkipTime = currentTime;
 
                 if (audioPlay && typingAudio) {
@@ -119,28 +110,22 @@
     }
 
     let keydownHandlerRef = handleKeydown;
-    // *** Restored: Variable for blink interval ID ***
     let blinkInterval: ReturnType<typeof setInterval>;
 
     onMount(() => {
         setupAudio();
-        // *** Restored: Original keydown listener setup ***
         window.addEventListener('keydown', keydownHandlerRef);
         queue.push(animate);
         processQueue();
 
-        // *** Restored: Original blink interval setup ***
         blinkInterval = setInterval(() => {
             isCaretVisible = !isCaretVisible;
-        }, 175); // Original interval time
+        }, 175);
 
-        return () => { // Combined cleanup
-             // *** Restored: Original keydown listener removal ***
+        return () => {
             window.removeEventListener('keydown', keydownHandlerRef);
-             // *** Restored: Original blink interval clearing ***
             clearInterval(blinkInterval);
 
-            // Other cleanup remains
             if (typingAudio) {
                 typingAudio.pause();
                 typingAudio.src = '';
@@ -159,29 +144,24 @@
         };
     });
 
-    // animate: Keeps the *removal* of the final scroll at the end
-    // Also keeps the improved audio stop logic (no fade unless desired)
     async function animate() {
-        if (isTyping) return; // Check added previously
+        if (isTyping) return;
         hasStarted = true;
         isAnyScrolling.set(true);
         activeInstance.set(instanceId);
-        isTyping = true; // Set state here
-        skipAnimation = false; // Reset skip flag
+        isTyping = true;
+        skipAnimation = false;
         animationStartTime = Date.now();
 
         if (startDelay > 0) {
             await new Promise(resolve => setTimeout(resolve, startDelay));
         }
 
-        // Audio play logic (original restored, but check typingAudio exists)
         if (audioPlay && typingAudio && text && !skipAnimation) {
              try {
                 const totalAnimationTime = (text.length * typingSpeed) / 1000;
-                // Ensure audioLength is valid before using it
                 const startTime = audioLength > 0 ? audioLength - totalAnimationTime : 0;
                 typingAudio.currentTime = Math.max(0, startTime);
-                // Apply current volume before playing
                 typingAudio.volume = $audioLevel / 100;
                 await typingAudio.play();
              } catch (error) {
@@ -189,15 +169,12 @@
              }
         }
 
-        await typeText(); // This will now set isTyping=false if skip happens
+        await typeText();
 
-        // Audio stop logic: Restore original fade-out
         if (audioPlay && typingAudio) {
-            // Check if fade logic should only run if audio was actually played
              if (typingAudio.duration > 0 && !typingAudio.paused) {
                  const fadePoints = 5;
                  const fadeTime = 200;
-                 // Use a flag to prevent multiple intervals if called rapidly
                  let fadeIntervalId: ReturnType<typeof setInterval> | null = null;
                  const clearFadeInterval = () => {
                      if (fadeIntervalId !== null) {
@@ -205,27 +182,23 @@
                          fadeIntervalId = null;
                      }
                  };
-                 // Clear any previous interval just in case
                  clearFadeInterval();
 
                  fadeIntervalId = setInterval(() => {
-                    // Check if audio still exists
                     if (!typingAudio) {
                         clearFadeInterval();
                         return;
                     }
                     if (typingAudio.volume > 0.1) {
-                        // Ensure volume doesn't go negative
                         typingAudio.volume = Math.max(0, typingAudio.volume - (1.0 / fadePoints));
                     } else {
                         clearFadeInterval();
                         typingAudio.pause();
-                        typingAudio.volume = $audioLevel / 100; // Reset to global level
+                        typingAudio.volume = $audioLevel / 100;
                         typingAudio.currentTime = 0;
                     }
                  }, fadeTime / fadePoints);
             } else {
-                // If audio wasn't playing, just ensure it's paused/reset
                 typingAudio.pause();
                 typingAudio.currentTime = 0;
                 typingAudio.volume = $audioLevel / 100;
@@ -233,46 +206,33 @@
         }
 
 
-        // Reset state (original placement) - isTyping might already be false if skipped
         isAnyScrolling.set(false);
-        isTyping = false; // Ensure it's false here
-
-
-        // *** FINAL SCROLL LOGIC REMAINS REMOVED ***
-        // const terminal = document.querySelector('.terminal-opening');
-        // if (terminal) {
-        //     terminal.scrollTo({ top: terminal.scrollHeight, behavior: 'smooth' });
-        // }
+        isTyping = false;
 
         dispatch('animationComplete');
-        processQueue(); // Keep this
+        processQueue();
     }
 
-    // typeText: Keeps the *removal* of 'behavior: smooth' from auto-scroll
     async function typeText() {
         const terminal = componentElement?.closest('.terminal-opening, .mainstuff');
-        if (!terminal || !componentElement) { isTyping = false; return; } // Keep checks
+        if (!terminal || !componentElement) { isTyping = false; return; }
         const screenHeight = terminal.clientHeight;
 
         for (let i = 0; i <= text.length; i++) {
-            // Skip logic: Original placement of setting displayedText and breaking
             if (skipAnimation) {
-                displayedText = text; // Set final text on skip
-                // isTyping = false; // Already set in handleKeydown now
-                // skipAnimation = false; // Reset after loop is better
+                displayedText = text;
                 break;
             }
 
             displayedText = text.slice(0, i);
-            await tick(); // Keep tick before scroll check
+            await tick();
 
-            try { // Auto-scroll logic
+            try {
                 if (componentElement) {
                     const contentBottom = componentElement.offsetTop + componentElement.offsetHeight;
                     const scrollThreshold = terminal.scrollTop + screenHeight * 0.75;
                     if (contentBottom > scrollThreshold) {
                         const scrollAmount = contentBottom - scrollThreshold;
-                        // *** KEEP behavior: 'smooth' REMOVED ***
                         terminal.scrollBy({ top: scrollAmount });
                     }
                 }
@@ -280,30 +240,9 @@
 
             await new Promise(resolve => setTimeout(resolve, typingSpeed));
         }
-        // Reset skip flag *after* loop/break
         skipAnimation = false;
-        // isTyping might have been set false by skip, ensure it here if loop completed normally
         isTyping = false;
     }
-
-    // *** Restored: Original onDestroy logic ***
-    // Note: Combined cleanup is now in onMount return function,
-    // so this separate onDestroy is not strictly needed unless adding new logic.
-    // The onMount return function is the preferred Svelte 3+ way.
-    // onDestroy(() => {
-    //     if (audioPlay && typingAudio) {
-    //         typingAudio.pause();
-    //         typingAudio.currentTime = 0;
-    //     }
-    //     if ($activeInstance === instanceId) {
-    //         activeInstance.set(null);
-    //     }
-    //     const index = queue.indexOf(animate);
-    //     if (index > -1) {
-    //         queue.splice(index, 1);
-    //     }
-    // });
-
 </script>
 
 <!-- HTML: Restored Original Caret Span -->

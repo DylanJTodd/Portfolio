@@ -65,19 +65,15 @@
         showChoiceSelector = false;
         executeTransition(nextStep);
     }
-
-    // --- Restored Original executeTransition Logic ---
     function executeTransition(nextStep: number) {
-        showContent = false; // Trigger out animation
+        showContent = false;
 
         setTimeout(() => {
-            // Restore explicit clearing and step update order
             if (terminalSection) {
-                terminalSection.innerHTML = ''; // Explicitly clear
-                currentStep = nextStep;         // Update step *after* clearing
+                terminalSection.innerHTML = '';
+                currentStep = nextStep;
             }
 
-            // Handle navigation steps (remain the same)
             if (nextStep === -1) {
                 updateGlobalSettingsAndCookies();
                 navigateTo('login');
@@ -88,10 +84,8 @@
                 return;
             }
 
-            // Trigger in animation (remains the same)
             showContent = true;
 
-            // Restore original inner timeout delay
             setTimeout(() => {
                 transitionInProgress = false;
                 if (pendingTransition !== null) {
@@ -99,11 +93,10 @@
                     pendingTransition = null;
                     executeTransition(next);
                 }
-            }, 1200); // Using original 1200ms delay
+            }, 1200);
 
-        }, 1000); // Match out:fly duration
+        }, 1000);
     }
-     // --- End of Restored Logic ---
 
     function handleSelection(step: number, choiceIndex: number) {
         if (transitionInProgress || !inputEnabled || step !== currentStep) return;
@@ -146,7 +139,6 @@
         }
     }
 
-    // Keep the tick-based scrolling fix here
     async function handleAnimationComplete(step: number) {
         if (transitionInProgress || step !== currentStep) return;
 
@@ -190,7 +182,7 @@
             <TextScroll startDelay={400} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="..." />
             <TextScroll startDelay={700} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="..." />
             <TextScroll startDelay={1000} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="Logging In." />
-            <TextScroll hideCaretManually={false} startDelay={1} audioPlay={false} text="" on:animationComplete={() => handleAnimationComplete(1)} />
+            <TextScroll hideCaretManually={true} startDelay={1} audioPlay={false} text="" on:animationComplete={() => handleAnimationComplete(1)} />
             <br>
 
             {#if showChoiceSelector && currentStep === 1}
@@ -207,7 +199,7 @@
             <TextScroll startDelay={400} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="Initializing Configuration..." />
             <TextScroll startDelay={400} audioPlay={localAudioEnabled} typingSpeed={30 * Number(get(textSpeed))} text="..." />
             <TextScroll startDelay={1000} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="Customize Terminal?" />
-            <TextScroll hideCaretManually={false} startDelay={1} audioPlay={false} text="" on:animationComplete={() => handleAnimationComplete(2)} />
+            <TextScroll hideCaretManually={true} startDelay={1} audioPlay={false} text="" on:animationComplete={() => handleAnimationComplete(2)} />
             <br>
 
             {#if showChoiceSelector && currentStep === 2}
@@ -223,7 +215,7 @@
         {:else if currentStep === 3}
             <TextScroll startDelay={400} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="..." />
             <TextScroll startDelay={400} audioPlay={localAudioEnabled} typingSpeed={30 * Number(get(textSpeed))} text="Enable Low Graphics mode? (Better for low specs)" />
-            <TextScroll hideCaretManually={false} startDelay={1} audioPlay={false} text="" on:animationComplete={() => handleAnimationComplete(3)} />
+            <TextScroll hideCaretManually={true} startDelay={1} audioPlay={false} text="" on:animationComplete={() => handleAnimationComplete(3)} />
             <br>
 
             {#if showChoiceSelector && currentStep === 3}
@@ -240,7 +232,7 @@
             <TextScroll startDelay={400} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="..." />
             <TextScroll startDelay={1000} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="..." />
             <TextScroll startDelay={1000} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="Enable Audio?" />
-            <TextScroll hideCaretManually={false} startDelay={1} audioPlay={false} text="" on:animationComplete={() => handleAnimationComplete(4)} />
+            <TextScroll hideCaretManually={true} startDelay={1} audioPlay={false} text="" on:animationComplete={() => handleAnimationComplete(4)} />
             <br>
 
             {#if showChoiceSelector && currentStep === 4}
@@ -258,7 +250,7 @@
             <TextScroll startDelay={500} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text={localAudioEnabled ? "Audio Enabled" : "Audio Disabled"} />
             <TextScroll audioPlay={localAudioEnabled} typingSpeed={50 * Number(get(textSpeed))} text="Terminal Color Configuration" hideCaretManually={true} />
             <TextScroll startDelay={500} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="Select a color:" />
-            <TextScroll hideCaretManually={false} startDelay={1} audioPlay={false} text="" on:animationComplete={() => handleAnimationComplete(5)} />
+            <TextScroll hideCaretManually={true} startDelay={1} audioPlay={false} text="" on:animationComplete={() => handleAnimationComplete(5)} />
              <br>
 
             {#if showChoiceSelector && currentStep === 5}

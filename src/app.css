@@ -42,7 +42,7 @@ section{
 
 .terminal-opening {
     width: 75%;
-    height: 100vh;
+    height: 90vh;
     position: absolute;
     padding:0;
     padding-left: 20vw;
@@ -58,7 +58,7 @@ section{
 
 .mainstuff{
     width: 75%;
-    height: 100vh;
+    height: 90vh;
     padding:0;
     padding-left: 20vw;
     padding-bottom: 3rem;
@@ -74,7 +74,7 @@ section{
 @media screen and (max-width: 768px) {
     .mainstuff {
         width: 90%;
-        height: 100vh;
+        height: 90vh;
         padding:0;
         padding-left: 2vw;
         padding-bottom: 3rem;
@@ -92,7 +92,7 @@ section{
 @media screen and (max-width: 768px) {
     .terminal-opening {
         width: 90%;
-        height: 100vh;
+        height: 90vh;
         position: absolute;
         padding:0;
         padding-left: 2vw;
@@ -129,6 +129,7 @@ section{
 
 .choice-list{
     width: 70%;
+    margin-top: 0.5rem;
 }
 
 .caret {

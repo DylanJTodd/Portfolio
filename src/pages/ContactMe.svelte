@@ -51,7 +51,7 @@
   </script>
   
   <section class="contact-form">
-    <p>Please fill out the form below to send me a message. Fields marked with * are required.</p>
+    <p style="margin-top: 0; margin-bottom: 5px;">Please fill out the form below to send me a message. Fields marked with * are required.</p>
   
     {#if errorMessage}
       <p class="error-message">{errorMessage}</p>

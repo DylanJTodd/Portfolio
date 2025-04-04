@@ -45,7 +45,6 @@
           if (settings.lowGraphics !== undefined)
             lowGraphics.set(!!settings.lowGraphics);
   
-          // Save settings into cookies so that later pages can read them if necessary
           document.cookie = `terminal_color=${settings.terminal_color}; path=/;`;
           document.cookie = `audio_enabled=${settings.audio_enabled}; path=/;`;
           document.cookie = `text_speed=${settings.text_speed}; path=/;`;
@@ -80,13 +79,10 @@
       });
       const data = await response.json();
       if (response.ok && data.user_id) {
-        // The API now returns the (formatted) last_login date.
         lastLogin.set(data.last_login);
-        // Load user settings after login.
         const settingsLoaded = await loadUserSettings(data.user_id);
         if (!settingsLoaded) {
           errorMessage = 'Failed to load user settings, but login was successful.';
-          // Continue the login process even if settings fail to load.
         }
         userID.set(data.user_id);
         isLoggedIn.set(true);
@@ -164,7 +160,6 @@
           console.error('Error saving initial settings:', settingsError);
         }
   
-        // For account creation, we assume last_login is managed by the API for login.
         userID.set(userId);
         isLoggedIn.set(true);
         navigateTo('navigation');

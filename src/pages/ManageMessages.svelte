@@ -9,23 +9,19 @@
   let currentStep = 1;
   let messageDetails: any = null;
 
-  // New search query variable – bound to a text input below.
   let searchQuery: string = '';
 
-  // Instead of manually updating the list choices, we rely on reactive declarations.
-  // computedFilteredMessages returns all messages (if search is blank) or only those that have the search term in their content.
   $: filteredMessages = searchQuery
     ? messages.filter(m =>
         m.message_content.toLowerCase().includes(searchQuery.toLowerCase())
       )
     : messages;
 
-  // The list choices and the list custom classes now derive from filteredMessages.
   $: listChoices = ['Delete All', 'Back', '', ...filteredMessages.map(m => m.subject || 'No Subject')];
   $: listCustomClasses = [
-    '', // for "Delete All"
-    '', // for "Back"
-    'separator', // separator index
+    '',
+    '',
+    'separator',
     ...filteredMessages.map(m => m.is_read ? 'read-message' : '')
   ];
 
@@ -35,13 +31,11 @@
       if (response.ok) {
         const fetchedMessages = await response.json();
         messages = fetchedMessages.sort((a: any, b: any) => {
-          // First order by unread (0 comes first) then by submitted_at date descending
           if (a.is_read === b.is_read) {
             return new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime();
           }
           return a.is_read - b.is_read;
         });
-        // No need to manually update list choices because our reactive declarations take care of it.
       } else {
         console.error('Failed to fetch messages:', await response.json());
       }
@@ -98,7 +92,6 @@
   }
 
   async function deleteAllMessages() {
-    // Delete only the currently shown (filtered) messages.
     for (const message of filteredMessages) {
       await fetch(`/api/messages/${message.message_id}`, { method: 'DELETE' });
     }
@@ -132,8 +125,6 @@
 </script>
 
 {#if currentStep === 1}
-  <!-- Search bar above the choices. The value is bound to searchQuery.
-       When searchQuery changes, filteredMessages (and in turn listChoices) update automatically. -->
   <div class="search-container">
     <input
       type="text"
@@ -152,7 +143,6 @@
       } else if (index === 1) {
         navigateTo('navigation');
       } else {
-        // Adjust index to account for the 3 default entries ("Delete All", "Back", separator)
         selectedMessageId = filteredMessages[index - 3].message_id;
         if (selectedMessageId !== null) {
           await fetchMessageDetails(selectedMessageId);

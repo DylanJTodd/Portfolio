@@ -27,7 +27,6 @@
     export let glowOpacity: number = 0.1;
   </script>
   
-  <!-- Importing individual components -->
   <Scanlines 
     {scanWidth}
     {scanMovingLineWidth}
