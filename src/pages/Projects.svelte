@@ -33,14 +33,15 @@
 
     <p class="choice-list" bind:this={choiceList} style="visibility: hidden;">
         <ChoiceSelector 
-            choices={['This Portfolio Site (About me)','Educational Web-based SQL Game', 'Kaggle Repository', 'Back']}
+            choices={['This Portfolio Site (About me)','Educational Web-based SQL Game', 'Kaggle Repository', 'ThumbGenie', 'Back']}
             isActive={choiceList?.style.visibility === 'visible'}
             onSelect={(index) => {
                 clearTerminal();
                 if (index === 0) navigateTo('about');
                 if (index === 1) navigateTo('sql_squid_games');
                 if (index === 2) navigateTo('kaggle');
-                if (index === 3) navigateTo('navigation');
+                if (index === 3) navigateTo('thumbgenie');
+                if (index === 4) navigateTo('navigation');
             }}
         />
     </p>

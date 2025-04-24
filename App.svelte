@@ -11,6 +11,7 @@
   import Notes from './src/pages/Notes.svelte';
   import Settings from './src/pages/Settings.svelte';
   import Contact from './src/pages/ContactMe.svelte';
+  import ThumbGenie from './src/pages/ThumbGenie.svelte';
   import Kaggle from './src/pages/Kaggle.svelte';
   import MessageManager from './src/pages/ManageMessages.svelte';
 
@@ -37,6 +38,7 @@
     sql_squid_games: SQLSquidGames,
     login: Login,
     notes: Notes,
+    thumbgenie: ThumbGenie,
     settings: Settings,
     contact: Contact,
     kaggle: Kaggle,
