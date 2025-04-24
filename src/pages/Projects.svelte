@@ -24,7 +24,8 @@
 
 {#if showContent}
 <section class="terminal-opening" bind:this={terminalSection} in:fly="{{ y: 0, duration: 1000 }}" out:fly="{{ y: -1000, duration: 1000 }}">
-    <TextScroll startDelay={1000} audioPlay={$audioEnabled} typingSpeed={50 / Number($textSpeed)} text="Please choose any project name that interests you, and learn what it's about!" on:animationComplete={() => { 
+    <TextScroll startDelay={1000} audioPlay={$audioEnabled} typingSpeed={50 / Number($textSpeed)} text="Please choose any project name that interests you, and learn what it's about!"/>
+    <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={50 / Number($textSpeed)} text="Ordered from recent to oldest." on:animationComplete={() => { 
         if (choiceList) {
             choiceList.style.visibility = 'visible';
         }
@@ -33,7 +34,7 @@
 
     <p class="choice-list" bind:this={choiceList} style="visibility: hidden;">
         <ChoiceSelector 
-            choices={['This Portfolio Site (About me)','Educational Web-based SQL Game', 'Kaggle Repository', 'ThumbGenie', 'Back']}
+            choices={['This Portfolio Site (About me)','Educational Web-based SQL Game', 'Kaggle Repository', 'ThumbGenie', 'Facebook UI Redesign', 'Back']}
             isActive={choiceList?.style.visibility === 'visible'}
             onSelect={(index) => {
                 clearTerminal();
@@ -41,7 +42,8 @@
                 if (index === 1) navigateTo('sql_squid_games');
                 if (index === 2) navigateTo('kaggle');
                 if (index === 3) navigateTo('thumbgenie');
-                if (index === 4) navigateTo('navigation');
+                if (index === 4) navigateTo('fbredesign');
+                if (index === 5) navigateTo('navigation');
             }}
         />
     </p>

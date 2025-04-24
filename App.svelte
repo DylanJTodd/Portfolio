@@ -13,6 +13,7 @@
   import Contact from './src/pages/ContactMe.svelte';
   import ThumbGenie from './src/pages/ThumbGenie.svelte';
   import Kaggle from './src/pages/Kaggle.svelte';
+  import FBRedesign from './src/pages/FacebookRedesign.svelte';
   import MessageManager from './src/pages/ManageMessages.svelte';
 
   import TerminalEffect from './src/components/terminaleffect.svelte';
@@ -42,6 +43,7 @@
     settings: Settings,
     contact: Contact,
     kaggle: Kaggle,
+    fbredesign: FBRedesign,
     messagemanager: MessageManager,
   };
 
