@@ -11,6 +11,7 @@
   import Notes from './src/pages/Notes.svelte';
   import Settings from './src/pages/Settings.svelte';
   import Contact from './src/pages/ContactMe.svelte';
+  import Kaggle from './src/pages/Kaggle.svelte';
   import MessageManager from './src/pages/ManageMessages.svelte';
 
   import TerminalEffect from './src/components/terminaleffect.svelte';
@@ -33,11 +34,12 @@
     navigation: Navigation,
     about: About,
     projects: Projects,
-    'projects/sql_squid_games': SQLSquidGames,
+    sql_squid_games: SQLSquidGames,
     login: Login,
     notes: Notes,
     settings: Settings,
     contact: Contact,
+    kaggle: Kaggle,
     messagemanager: MessageManager,
   };
 
