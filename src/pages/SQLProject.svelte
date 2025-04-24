@@ -82,12 +82,12 @@
 
     {#key currentStep}
         {#if currentStep === 1}
-            <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={40 * Number($textSpeed)} text="SQL Squid Games was a website I developed when I worked at DataLemur "/>
-            <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={40 * Number($textSpeed)} text="Although I cannot publicly provide the code, I am more than happy to explain what I did below."/>
-            <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={40 * Number($textSpeed)} text="First I Conducted user and competitor research (playing all other sql games), compiling key insights. Then I binged all of squid games over a weekend, and presented my findings to the CEO. Then I Designed Figma prototypes, iterated, and finalized the site layout."/>
-            <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={40 * Number($textSpeed)} text="For the front-end, specifically only html and css were used, along with javascript. There was no backend, as we wanted this to be a light website, We conducted queries through PGLite, (Postgres)."/>
-            <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={40 * Number($textSpeed)} text="I came up with all the scenarios, schemas, and queries myself, and it overall made for a really fun game! There is now over 500,000 visits to the site, and it was received well."/>
-            <TextScroll startDelay={500} hideCaretManually={true} audioPlay={false} typingSpeed={50 * Number($textSpeed)} text="" on:animationComplete={() => handleAnimationComplete(1)} />
+            <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={40 / Number($textSpeed)} text="SQL Squid Games was a website I developed when I worked at DataLemur "/>
+            <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={40 / Number($textSpeed)} text="Although I cannot publicly provide the code, I am more than happy to explain what I did below."/>
+            <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={40 / Number($textSpeed)} text="First I Conducted user and competitor research (playing all other sql games), compiling key insights. Then I binged all of squid games over a weekend, and presented my findings to the CEO. Then I Designed Figma prototypes, iterated, and finalized the site layout."/>
+            <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={40 / Number($textSpeed)} text="For the front-end, specifically only html and css were used, along with javascript. There was no backend, as we wanted this to be a light website, We conducted queries through PGLite, (Postgres)."/>
+            <TextScroll startDelay={100} audioPlay={$audioEnabled} typingSpeed={40 / Number($textSpeed)} text="I came up with all the scenarios, schemas, and queries myself, and it overall made for a really fun game! There is now over 500,000 visits to the site, and it was received well."/>
+            <TextScroll startDelay={500} hideCaretManually={true} audioPlay={false} typingSpeed={50 / Number($textSpeed)} text="" on:animationComplete={() => handleAnimationComplete(1)} />
 
             <p class="choice-list" bind:this={choiceList} style="visibility: hidden;">
                 <ChoiceSelector

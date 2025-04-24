@@ -129,7 +129,7 @@
 {#if showContent}
   <section class="terminal-settings" bind:this={terminalSection} in:fly={{ y: 0, duration: 1000 }} out:fly={{ y: -1000, duration: 1000 }}>
     {#if currentStep === 1}
-      <TextScroll audioPlay={$audioEnabled} typingSpeed={50 * Number($textSpeed)} text="Customize your settings" />
+      <TextScroll audioPlay={$audioEnabled} typingSpeed={50 / Number($textSpeed)} text="Customize your settings" />
       <TextScroll hideCaretManually={true} startDelay={500} audioPlay={$audioEnabled} /><br>
       <div>
         <ChoiceSelector

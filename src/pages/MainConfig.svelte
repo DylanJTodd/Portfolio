@@ -176,12 +176,12 @@
 <section class="terminal-opening" bind:this={terminalSection} in:fly="{{ y: 0, duration: 1000 }}" out:fly="{{ y: -1000, duration: 1000 }}">
     {#key currentStep}
         {#if currentStep === 1}
-            <TextScroll audioPlay={localAudioEnabled} typingSpeed={50 * Number(get(textSpeed))} text="*************** PORTFOLIO-OS(R) V1.0.0 ***************" />
+            <TextScroll audioPlay={localAudioEnabled} typingSpeed={50 / Number(get(textSpeed))} text="*************** PORTFOLIO-OS(R) V1.0.0 ***************" />
             <br><br>
-            <TextScroll startDelay={1000} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="Setting up configuration..." />
-            <TextScroll startDelay={400} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="..." />
-            <TextScroll startDelay={700} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="..." />
-            <TextScroll startDelay={1000} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="Logging In." />
+            <TextScroll startDelay={1000} audioPlay={localAudioEnabled} typingSpeed={75 / Number(get(textSpeed))} text="Setting up configuration..." />
+            <TextScroll startDelay={400} audioPlay={localAudioEnabled} typingSpeed={75 / Number(get(textSpeed))} text="..." />
+            <TextScroll startDelay={700} audioPlay={localAudioEnabled} typingSpeed={75 / Number(get(textSpeed))} text="..." />
+            <TextScroll startDelay={1000} audioPlay={localAudioEnabled} typingSpeed={75 / Number(get(textSpeed))} text="Logging In." />
             <TextScroll hideCaretManually={true} startDelay={1} audioPlay={false} text="" on:animationComplete={() => handleAnimationComplete(1)} />
             <br>
 
@@ -196,9 +196,9 @@
             {/if}
 
         {:else if currentStep === 2}
-            <TextScroll startDelay={400} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="Initializing Configuration..." />
-            <TextScroll startDelay={400} audioPlay={localAudioEnabled} typingSpeed={30 * Number(get(textSpeed))} text="..." />
-            <TextScroll startDelay={1000} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="Customize Terminal?" />
+            <TextScroll startDelay={400} audioPlay={localAudioEnabled} typingSpeed={75 / Number(get(textSpeed))} text="Initializing Configuration..." />
+            <TextScroll startDelay={400} audioPlay={localAudioEnabled} typingSpeed={30 / Number(get(textSpeed))} text="..." />
+            <TextScroll startDelay={1000} audioPlay={localAudioEnabled} typingSpeed={75 / Number(get(textSpeed))} text="Customize Terminal?" />
             <TextScroll hideCaretManually={true} startDelay={1} audioPlay={false} text="" on:animationComplete={() => handleAnimationComplete(2)} />
             <br>
 
@@ -213,8 +213,8 @@
             {/if}
 
         {:else if currentStep === 3}
-            <TextScroll startDelay={400} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="..." />
-            <TextScroll startDelay={400} audioPlay={localAudioEnabled} typingSpeed={30 * Number(get(textSpeed))} text="Enable Low Graphics mode? (Better for low specs)" />
+            <TextScroll startDelay={400} audioPlay={localAudioEnabled} typingSpeed={75 / Number(get(textSpeed))} text="..." />
+            <TextScroll startDelay={400} audioPlay={localAudioEnabled} typingSpeed={30 / Number(get(textSpeed))} text="Enable Low Graphics mode? (Better for low specs)" />
             <TextScroll hideCaretManually={true} startDelay={1} audioPlay={false} text="" on:animationComplete={() => handleAnimationComplete(3)} />
             <br>
 
@@ -229,9 +229,9 @@
             {/if}
 
         {:else if currentStep === 4}
-            <TextScroll startDelay={400} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="..." />
-            <TextScroll startDelay={1000} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="..." />
-            <TextScroll startDelay={1000} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="Enable Audio?" />
+            <TextScroll startDelay={400} audioPlay={localAudioEnabled} typingSpeed={75 / Number(get(textSpeed))} text="..." />
+            <TextScroll startDelay={1000} audioPlay={localAudioEnabled} typingSpeed={75 / Number(get(textSpeed))} text="..." />
+            <TextScroll startDelay={1000} audioPlay={localAudioEnabled} typingSpeed={75 / Number(get(textSpeed))} text="Enable Audio?" />
             <TextScroll hideCaretManually={true} startDelay={1} audioPlay={false} text="" on:animationComplete={() => handleAnimationComplete(4)} />
             <br>
 
@@ -246,10 +246,10 @@
             {/if}
 
         {:else if currentStep === 5}
-            <TextScroll startDelay={400} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="..." />
-            <TextScroll startDelay={500} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text={localAudioEnabled ? "Audio Enabled" : "Audio Disabled"} />
-            <TextScroll audioPlay={localAudioEnabled} typingSpeed={50 * Number(get(textSpeed))} text="Terminal Color Configuration" hideCaretManually={true} />
-            <TextScroll startDelay={500} audioPlay={localAudioEnabled} typingSpeed={75 * Number(get(textSpeed))} text="Select a color:" />
+            <TextScroll startDelay={400} audioPlay={localAudioEnabled} typingSpeed={75 / Number(get(textSpeed))} text="..." />
+            <TextScroll startDelay={500} audioPlay={localAudioEnabled} typingSpeed={75 / Number(get(textSpeed))} text={localAudioEnabled ? "Audio Enabled" : "Audio Disabled"} />
+            <TextScroll audioPlay={localAudioEnabled} typingSpeed={50 / Number(get(textSpeed))} text="Terminal Color Configuration" hideCaretManually={true} />
+            <TextScroll startDelay={500} audioPlay={localAudioEnabled} typingSpeed={75 / Number(get(textSpeed))} text="Select a color:" />
             <TextScroll hideCaretManually={true} startDelay={1} audioPlay={false} text="" on:animationComplete={() => handleAnimationComplete(5)} />
              <br>
 
@@ -272,11 +272,11 @@
             {/if}
 
         {:else if currentStep >= 6}
-            <TextScroll startDelay={200} audioPlay={localAudioEnabled} typingSpeed={50 * Number(get(textSpeed))} text="Configuration complete..." />
+            <TextScroll startDelay={200} audioPlay={localAudioEnabled} typingSpeed={50 / Number(get(textSpeed))} text="Configuration complete..." />
             <br>
-            <TextScroll startDelay={500} audioPlay={localAudioEnabled} typingSpeed={50 * Number(get(textSpeed))} text="Welcome to PORTFOLIO-OS(R) V1.0.0!" />
+            <TextScroll startDelay={500} audioPlay={localAudioEnabled} typingSpeed={50 / Number(get(textSpeed))} text="Welcome to PORTFOLIO-OS(R) V1.0.0!" />
             <br>
-            <TextScroll startDelay={100} audioPlay={localAudioEnabled} typingSpeed={50 * Number(get(textSpeed))} text="Redirecting to main directory..." on:animationComplete={() => handleAnimationComplete(6)} />
+            <TextScroll startDelay={100} audioPlay={localAudioEnabled} typingSpeed={50 / Number(get(textSpeed))} text="Redirecting to main directory..." on:animationComplete={() => handleAnimationComplete(6)} />
         {/if}
     {/key}
 </section>
