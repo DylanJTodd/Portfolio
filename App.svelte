@@ -10,6 +10,7 @@
   import Login from './src/pages/Login.svelte';
   import Notes from './src/pages/Notes.svelte';
   import Settings from './src/pages/Settings.svelte';
+  import Experience from './src/pages/Experience.svelte';
   import Contact from './src/pages/ContactMe.svelte';
   import ThumbGenie from './src/pages/ThumbGenie.svelte';
   import Kaggle from './src/pages/Kaggle.svelte';
@@ -39,6 +40,7 @@
     sql_squid_games: SQLSquidGames,
     login: Login,
     notes: Notes,
+    experience: Experience,
     thumbgenie: ThumbGenie,
     settings: Settings,
     contact: Contact,

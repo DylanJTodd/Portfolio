@@ -37,6 +37,7 @@
 
     $: choices = [
         'Projects', 
+        'Experience',
         'About', 
         'Contact Me', 
         $isLoggedIn ? 'Notes' : 'Must be logged in to view', 
@@ -44,7 +45,7 @@
         ...(isAdmin ? ['Message Manager'] : [])
     ];
     
-    $: disabledChoices = !$isLoggedIn ? [3, 4] : [];
+    $: disabledChoices = !$isLoggedIn ? [4, 5] : [];
 </script>
 {#if showContent}
 <section class="terminal-opening" bind:this={terminalSection} in:fly="{{ y: 0, duration: 1000 }}" out:fly="{{ y: -1000, duration: 1000 }}">
@@ -67,11 +68,12 @@
             onSelect={(index) => {
                 clearTerminal();
                 if (index === 0) navigateTo('projects');
-                if (index === 1) navigateTo('about');
-                if (index === 2) navigateTo('contact');
-                if (index === 3) navigateTo('notes');
-                if (index === 4) navigateTo('settings');
-                if (index === 5 && isAdmin) navigateTo('messagemanager');
+                if (index === 1) navigateTo('experience');
+                if (index === 2) navigateTo('about');
+                if (index === 3) navigateTo('contact');
+                if (index === 4) navigateTo('notes');
+                if (index === 5) navigateTo('settings');
+                if (index === 6 && isAdmin) navigateTo('messagemanager');
             }}
         />
     </p>
